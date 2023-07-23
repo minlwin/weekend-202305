@@ -7,6 +7,7 @@
   <servlet>
     <servlet-name>helloServlet</servlet-name>
     <servlet-class>com.jdc.demo.HelloServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>helloServlet</servlet-name>
