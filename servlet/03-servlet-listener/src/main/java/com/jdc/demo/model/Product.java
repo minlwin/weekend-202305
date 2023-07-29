@@ -3,14 +3,21 @@ package com.jdc.demo.model;
 import java.io.Serializable;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	private int id;
-	private int name;
-	private int price;
+	private final String name;
+	private final int price;
+	
+	private static int IDS;
+	
+	{
+		id = ++ IDS;
+	}
 }
