@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>    
+<%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,36 +17,16 @@
 		
 		<h1>Products</h1>
 		
-		<div class="row row-cols-4 g-4 mt-2">
-		
-			<c:forEach var="item" items="${products}">
-				
-				<div class="col">
-					<div class="card">
-						<div class="card-body d-flex justify-content-between">
-							
-							<div class="d-flex">
-								<h4>${item.id}</h4>
-								
-								<div class="d-flex flex-column ms-3">
-									<h4>${item.name}</h4>
-									<span class="text-secondary">${item.price} MMK</span>
-								</div>
-							</div>
-							
-							<div>
-								<a href="#" class="btn-link">
-									<h4>
-										<i class="bi bi-plus"></i>
-									</h4>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
+		<div class="row">
+			<div class="col">
+				<!-- Product List -->
+				<app:product-list />
+			</div>
 			
-			</c:forEach>
-			
+			<div class="col-3">
+				<!-- Shopping Cart -->
+				<app:shoppin-cart />
+			</div>
 		</div>
 	
 	</div>
