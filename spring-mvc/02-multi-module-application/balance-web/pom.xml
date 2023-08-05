@@ -4,26 +4,27 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.jdc.weekend</groupId>
-		<artifactId>03-multi-module-application</artifactId>
+		<artifactId>02-multi-module-application</artifactId>
 		<version>0.1.0</version>
+		<relativePath />
 	</parent>
 	<artifactId>balance-web</artifactId>
 	<packaging>war</packaging>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.jdc.weekend</groupId>
 			<artifactId>balance-data-api</artifactId>
-		</dependency>	
-		
+		</dependency>
+
 		<dependency>
 			<groupId>com.jdc.weekend</groupId>
 			<artifactId>balance-data-impl</artifactId>
-		</dependency>	
+		</dependency>
 	</dependencies>
 </project>

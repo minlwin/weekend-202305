@@ -2,8 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.jdc.weekend</groupId>
-    <artifactId>03-multi-module-application</artifactId>
+    <artifactId>02-multi-module-application</artifactId>
     <version>0.1.0</version>
+    <relativePath />
   </parent>
   <artifactId>balance-data-api</artifactId>
 </project>
