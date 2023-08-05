@@ -6,7 +6,7 @@
 		<groupId>com.jdc.weekend</groupId>
 		<artifactId>02-multi-module-application</artifactId>
 		<version>0.1.0</version>
-		<relativePath />
+		<relativePath >../</relativePath>
 	</parent>
 	<artifactId>balance-web</artifactId>
 	<packaging>war</packaging>
@@ -17,16 +17,6 @@
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.jdc.weekend</groupId>
-			<artifactId>balance-data-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.jdc.weekend</groupId>
-			<artifactId>balance-data-impl</artifactId>
-		</dependency>
-		
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>

@@ -1,0 +1,12 @@
+.main-feature i {
+	font-size: 7rem;
+}
+
+.main-feature {
+	margin: 4rem 0rem;
+}
+
+.main-controls a {
+	display: inline-block;
+	width: 160px;
+}

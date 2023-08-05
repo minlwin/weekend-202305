@@ -6,7 +6,7 @@
 		<groupId>com.jdc.weekend</groupId>
 		<artifactId>02-multi-module-application</artifactId>
 		<version>0.1.0</version>
-	    <relativePath />
+	    <relativePath >../</relativePath>
 	</parent>
 	<artifactId>balance-data-impl</artifactId>
 	
