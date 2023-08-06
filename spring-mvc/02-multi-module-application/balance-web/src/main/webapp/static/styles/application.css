@@ -1,12 +1,16 @@
-.main-feature i {
-	font-size: 7rem;
+.anonymous-content {
+	padding-top: 4rem;
 }
 
-.main-feature {
-	margin: 4rem 0rem;
+.main-feature i {
+	font-size: 7rem;
 }
 
 .main-controls a {
 	display: inline-block;
 	width: 160px;
+}
+
+.sign-form {
+	width: 400px;
 }

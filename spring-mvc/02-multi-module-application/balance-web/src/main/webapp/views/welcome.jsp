@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>        
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>   
+<%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>     
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,12 +17,8 @@
 </head>
 <body>
 	
-	<div class="container text-center pt-4">
-		<!-- Title -->
-		<h1>The Balances</h1>
-		<!-- Sub Title -->
-		<h4>Personal Accounting System</h4>
-		
+	<app:anonymous-layout title="The Balances" subTitle="Personal Accounting System" >
+	
 		<!-- Main Features -->
 		<section class="row main-feature">
 			
@@ -53,12 +50,12 @@
 		</section>
 		
 		<!-- Buttons -->
-		<section class="main-controls">
-			<a href="#" class="btn btn-outline-primary"><i class="bi-person-plus"></i> Sign Up</a>
-			<a href="#" class="btn btn-outline-primary"><i class="bi-person-check"></i>Sign In</a>
+		<section class="main-controls mt-5">
+			<a href="/signup" class="btn btn-outline-primary"><i class="bi-person-plus"></i> Sign Up</a>
+			<a href="/signin" class="btn btn-outline-primary"><i class="bi-person-check"></i>Sign In</a>
 		</section>
 	
-	</div>
+	</app:anonymous-layout>
 
 </body>
 </html>
