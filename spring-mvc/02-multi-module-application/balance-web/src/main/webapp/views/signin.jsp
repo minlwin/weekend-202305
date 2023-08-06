@@ -27,7 +27,7 @@
 				<i class="bi-unlock"></i>
 			</div>
 		
-			<form action="#" class="sign-form">
+			<form action="/member/home" class="sign-form">
 				<!-- Email -->
 				<div class="mb-3">
 					<label class="form-label">Email Address</label>

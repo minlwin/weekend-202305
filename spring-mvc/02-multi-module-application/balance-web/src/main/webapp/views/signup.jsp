@@ -25,7 +25,7 @@
 				<i class="bi-person-plus"></i>
 			</div>
 		
-			<form action="#" class="sign-form">
+			<form action="/admin/home" class="sign-form">
 				<!-- Email -->
 				<div class="mb-3">
 					<label class="form-label">Member Name</label>
@@ -50,7 +50,7 @@
 					</button>
 					
 					<!-- Sign Up Link -->
-					<a href="/signup" class="btn btn-outline-primary">
+					<a href="/signin" class="btn btn-outline-primary">
 						<i class="bi bi-unlock"></i> Sign In
 					</a>
 				</div>
