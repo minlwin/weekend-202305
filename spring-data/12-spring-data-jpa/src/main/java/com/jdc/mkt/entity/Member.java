@@ -4,14 +4,25 @@ import static javax.persistence.EnumType.STRING;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
+import javax.persistence.MapsId;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
@@ -63,6 +74,39 @@ public class Member implements Serializable {
 	private String township;
 	@Column(table = "address_tbl")
 	private String city;
+	
+	@ElementCollection
+	@CollectionTable(name = "member_info_tbl", 
+	joinColumns = {
+			@JoinColumn(name = "member_id",nullable = false),
+			})
+	@Enumerated(STRING)
+	private List<Role> infos;
+	
+	@ElementCollection
+	@CollectionTable(name = "member_hobbies_tbl", 
+	joinColumns = @JoinColumn(name = "member_id", 
+	referencedColumnName = "id"))
+	@OrderBy("desc")
+	private Set<String> hobbies;
+	
+	@MapKeyColumn(name = "member_map_key")
+	@MapKeyEnumerated(STRING)
+	@CollectionTable(name = "member_maps_tbl",
+			joinColumns = @JoinColumn(name = "member_id"))
+	@ElementCollection
+	private Map<Role, String> maps;
+	
+	
+	@ElementCollection
+	@CollectionTable(name = "member_ids_tbl",
+	joinColumns = @JoinColumn(name = "member_id"))
+	private List<MemberPk> memberIds;
+	
+	@OrderColumn
+	@ElementCollection
+	private List<String> messages;
+	
 	@Transient
 	private boolean isDeleted;
 	
