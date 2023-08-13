@@ -5,11 +5,11 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -19,14 +19,20 @@ import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 @ComponentScan(basePackages = "com.jdc.mkt.repo")
+@PropertySource("/mysql-con.properties")
 @EnableTransactionManagement
 public class ApplicationConfig {
 
+	private String url;
+	private String user;
+	private String pass;
 	@Bean
 	DataSource dataSource() {
-		var dataSource = new EmbeddedDatabaseBuilder();
-		dataSource.setType(EmbeddedDatabaseType.HSQL);
-		return dataSource.build();
+		var dpcp = new BasicDataSource();
+		 dpcp.setUrl(url);
+		 dpcp.setUsername(user);
+		 dpcp.setPassword(pass);
+		return dpcp;
 	}
 
 	@Bean
