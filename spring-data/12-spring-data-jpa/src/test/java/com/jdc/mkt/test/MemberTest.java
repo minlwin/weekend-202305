@@ -4,24 +4,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 import com.jdc.mkt.entity.Member;
 
-public class MemberTest {
+public class MemberTest extends EmfCreation {
 
-	private static EntityManagerFactory emf;
-
-	@BeforeAll
-	static void init() {
-		emf = Persistence.createEntityManagerFactory("SPRING-DATA");
-	}
+	
 
 	@ParameterizedTest
 	@CsvFileSource(resources = "/member-values.properties", delimiter = ':')
@@ -29,6 +20,7 @@ public class MemberTest {
 		
 		var df = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = df.parse(dob);
+		
 		
 		var em = emf.createEntityManager();
 		em.getTransaction().begin();

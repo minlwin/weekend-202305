@@ -31,18 +31,19 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Check;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+//@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "member_tbl")
 @SecondaryTables({
 	@SecondaryTable(name = "login_info",
-			indexes = { @Index(columnList = "email") },
 			uniqueConstraints = {
 					@UniqueConstraint(columnNames = "loginId") }
 		),
@@ -67,6 +68,7 @@ public class Member implements Serializable {
 	@Column(table = "login_info")
 	private String password;
 	@Column(table = "login_info")
+	@Check(constraints = "email != null && email like %@%")
 	private String email;
 	@Column(table = "address_tbl")
 	private String street;
