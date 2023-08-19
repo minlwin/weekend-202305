@@ -37,6 +37,9 @@
 					<i class="bi-pencil"></i>
 				</div>
 				<h5>Transaction Management</h5>
+				<p>
+					You can enter your daily transaction by separate ledgers. And also you can manage your credit and debit on Transaction Management Features.
+				</p>
 			</div>
 			
 			<!-- Check Balance Reports -->
@@ -45,6 +48,9 @@
 					<i class="bi-bar-chart"></i>
 				</div>
 				<h5>Balance Reports</h5>
+				<p>
+					Balance Reports feature support your transaction as a trial balance aspects. You can manage your transactions via monthly or yearly views.
+				</p>
 			</div>
 
 		</section>

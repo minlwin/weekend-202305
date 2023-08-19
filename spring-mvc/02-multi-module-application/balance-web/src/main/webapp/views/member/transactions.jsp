@@ -50,7 +50,8 @@
 					<i class="bi-search"></i> Search
 				</button>
 				
-				<a href="#" class="btn btn-dark">
+				<c:url value="/member/transaction/${pageTitle}/edit" var="addNew"></c:url>
+				<a href="${addNew}" class="btn btn-dark">
 					<i class="bi-plus"></i> Add New
 				</a>
 			</div>
@@ -62,6 +63,7 @@
 				<tr>
 					<th>Ledger</th>
 					<th>Issue Date</th>
+					<th>References</th>
 					<th class="text-end">Items</th>
 					<th class="text-end">Amount</th>
 					<th class="text-center"></th>
@@ -72,16 +74,20 @@
 				<tr>
 					<td>Some Ledger</td>
 					<td>2028-10-10</td>
+					<td>Any Other Remarks</td>
 					<td class="text-end">5</td>
 					<td class="text-end">120,000</td>
 					<td class="text-center">
-						<a href="#" class="btn-link">
+						<c:url value="/member/transaction/${pageTitle}/1" var="detailsLink" />
+						<a href="${detailsLink}" class="btn-link">
 							<i class="bi-send"></i>
 						</a>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+		
+		<app:pagination></app:pagination>
 	</div>
 </body>
 </html>

@@ -27,14 +27,14 @@ public class TransactionController {
 		return "member/transactions";
 	}
 	
-	@GetMapping("details/{id}")
+	@GetMapping("{type}/{id}")
 	String showDetails(@PathVariable long id, ModelMap model) {
-		return "member/transacton-details";
+		return "member/transaction-details";
 	}
 	
-	@GetMapping("edit/{type}")
-	String edit(@RequestParam Optional<Long> id) {
-		return "member/transacton-edit";
+	@GetMapping("{type}/edit")
+	String edit(@PathVariable LedgerType type, @RequestParam Optional<Long> id) {
+		return "member/transaction-edit";
 	}
 	
 	String save() {
