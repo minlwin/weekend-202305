@@ -6,7 +6,7 @@
 		<groupId>com.jdc.weekend</groupId>
 		<artifactId>02-multi-module-application</artifactId>
 		<version>0.1.0</version>
-		<relativePath >../</relativePath>
+		<relativePath >../pom.xml</relativePath>
 	</parent>
 	<artifactId>balance-web</artifactId>
 	<packaging>war</packaging>
@@ -36,5 +36,10 @@
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.jdc.weekend</groupId>
+			<artifactId>balance-data-api</artifactId>
+		</dependency>				
 	</dependencies>
 </project>

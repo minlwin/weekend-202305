@@ -13,11 +13,75 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+<c:url value="/styles/application.css" var="commonCss"></c:url>
+<link rel="stylesheet" href="${commonCss}" />
 </head>
 <body>
 
 	<!-- Navigation Bar -->
 	<app:member-menu />
 
+	<div class="container pt-4">
+		<h3>
+			<i class="${pageTitle eq 'Credit' ? 'bi-arrow-up' : 'bi-arrow-down'}"></i> ${pageTitle} Management
+		</h3>
+		
+		<!-- Search Form -->
+		<c:url value="/member/transaction/${pageTitle}" var="searchAction"></c:url>
+		<form action="${searchAction}" class="row my-3">
+						
+			<div class="col-auto">
+				<label class="form-label">Ledger Name</label>
+				<input type="text" name="ledgerName" class="form-control" placeholder="Search Name" />
+			</div>
+
+			<div class="col-auto">
+				<label class="form-label">Date From</label>
+				<input type="date" name="from" class="form-control" />
+			</div>
+
+			<div class="col-auto">
+				<label class="form-label">Date To</label>
+				<input type="date" name="to" class="form-control" />
+			</div>
+			
+			<div class="col btn-wrapper">
+				<button class="btn btn-outline-dark">
+					<i class="bi-search"></i> Search
+				</button>
+				
+				<a href="#" class="btn btn-dark">
+					<i class="bi-plus"></i> Add New
+				</a>
+			</div>
+		</form>
+		
+		<!-- Result Table -->
+		<table class="table table-strpied">
+			<thead>
+				<tr>
+					<th>Ledger</th>
+					<th>Issue Date</th>
+					<th class="text-end">Items</th>
+					<th class="text-end">Amount</th>
+					<th class="text-center"></th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr>
+					<td>Some Ledger</td>
+					<td>2028-10-10</td>
+					<td class="text-end">5</td>
+					<td class="text-end">120,000</td>
+					<td class="text-center">
+						<a href="#" class="btn-link">
+							<i class="bi-send"></i>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>
