@@ -26,6 +26,7 @@ replay_pid*
 **/.settings
 **/.classpath
 **/.project
+**/.mvn/
 **/target
 
 **/bin
