@@ -16,7 +16,9 @@
 		
 		<h1>Member Home</h1>
 		
-		<a href="/logout" class="btn btn-primary">Logout</a>
+		<sf:form method="post" action="/logout">
+			<button class="btn btn-primary">Logout</button>		
+		</sf:form>
 	</div>
 
 </body>
