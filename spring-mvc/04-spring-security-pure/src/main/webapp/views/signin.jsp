@@ -12,11 +12,27 @@
 <body>
 	
 	<div class="container mt-4">
-		<h1>Admin Home</h1>
+		<h1>Security Demo</h1>
 		
-		<sf:form method="post" action="/logout" >
-			<button class="btn btn-primary">Logout</button>
-		</sf:form>
+		<div class="w-25">
+			<sf:form action="/signin" method="post">
+				
+				<div class="mb-3">
+					<label class="form-label">Email</label>
+					<input type="email" class="form-control" name="username" placeholder="Enter Login Email" />
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Password</label>
+					<input type="password" class="form-control" name="password" placeholder="Enter Login Password" />
+				</div>
+				
+				<div>
+					<button class="btn btn-primary">Sign In</button>
+					<a href="/signup" class="btn btn-outline-primary">Sign Up</a>
+				</div>
+			
+			</sf:form>
+		</div>		
 	</div>
 
 </body>

@@ -12,7 +12,7 @@
 <body>
 	
 	<div class="container mt-4">
-		<h1>Admin Home</h1>
+		<h1>Member Home</h1>
 		
 		<sf:form method="post" action="/logout" >
 			<button class="btn btn-primary">Logout</button>

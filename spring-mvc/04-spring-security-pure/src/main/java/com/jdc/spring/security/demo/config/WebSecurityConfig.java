@@ -18,12 +18,22 @@ public class WebSecurityConfig {
 		var builder = new MvcRequestMatcher.Builder(introspector);
 		
 		http.authorizeHttpRequests(req -> {
-			req.requestMatchers(builder.pattern("/")).permitAll();
+			req.requestMatchers(
+					builder.pattern("/"),
+					builder.pattern("/signin"),
+					builder.pattern("/signup")
+			).permitAll();
 			req.requestMatchers(builder.pattern("/admin/**")).hasAuthority("Admin");
 			req.requestMatchers(builder.pattern("/member/**")).hasAnyAuthority("Member", "Admin");
 		});
 		
-		http.formLogin(form -> {});
+		http.formLogin(form -> {
+			form.loginPage("/signin");
+		});
+		
+		http.logout(logout -> {
+			logout.logoutSuccessUrl("/");
+		});
 		
 		return http.build();
 	}

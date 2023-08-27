@@ -16,6 +16,7 @@
 		
 		<div class="mt-4">
 			<a href="/admin/home" class="btn btn-primary">Admin Home</a>
+			<a href="/member/home" class="btn btn-primary">Member Home</a>
 		</div>
 	</div>
 
