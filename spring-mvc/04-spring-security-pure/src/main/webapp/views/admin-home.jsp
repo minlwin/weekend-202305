@@ -11,11 +11,11 @@
 <body>
 	
 	<div class="container mt-4">
-		<h1>Security Demo</h1>
+		<h1>Admin Home</h1>
 		
 		
 		<div class="mt-4">
-			<a href="/admin/home" class="btn btn-primary">Admin Home</a>
+			<a href="/logout" class="btn btn-primary">Logout</a>
 		</div>
 	</div>
 

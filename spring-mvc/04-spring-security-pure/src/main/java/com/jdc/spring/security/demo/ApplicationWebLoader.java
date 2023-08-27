@@ -2,6 +2,7 @@ package com.jdc.spring.security.demo;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.jdc.spring.security.demo.config.DatabaseConfig;
 import com.jdc.spring.security.demo.config.WebApplicationConfig;
 import com.jdc.spring.security.demo.config.WebSecurityConfig;
 
@@ -15,6 +16,7 @@ public class ApplicationWebLoader extends AbstractAnnotationConfigDispatcherServ
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
 		return new Class<?>[] {
+			DatabaseConfig.class,
 			WebApplicationConfig.class,
 			WebSecurityConfig.class
 		};
