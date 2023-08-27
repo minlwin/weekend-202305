@@ -13,6 +13,9 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
 
 @Entity
 @Getter
@@ -27,7 +30,7 @@ public class Category implements Serializable{
 	@Column(nullable = false,length = 40,unique = true)
 	private String name;
 	
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category", cascade = { PERSIST, MERGE })
 	private List<Product>products;
 
 }

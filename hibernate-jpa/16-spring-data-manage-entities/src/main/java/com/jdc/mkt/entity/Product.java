@@ -1,10 +1,8 @@
 package com.jdc.mkt.entity;
 
-import static javax.persistence.FetchType.LAZY;
-
 import java.io.Serializable;
 
-import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +27,7 @@ public class Product implements Serializable{
 	private int id;
 	private String name;
 	private int price;
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne(cascade = {CascadeType.REMOVE,CascadeType.PERSIST})
 	private Category category;
 	
 	

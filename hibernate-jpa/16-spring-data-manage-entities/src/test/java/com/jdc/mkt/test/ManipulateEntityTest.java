@@ -4,11 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -81,6 +76,7 @@ public class ManipulateEntityTest extends EntityFactory {
 	@ValueSource(ints=6)
 	void reference_method(int id) {
 		var em = emf.createEntityManager();
+		@SuppressWarnings("unused")
 		var product = em.getReference(Product.class, id);
 		//assertEquals("Lemon", product.getName());
 		//assertThrows(EntityNotFoundException.class,()-> em.getReference(Product.class, id));

@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.MERGE;
 
 @Entity
 @Getter
@@ -34,7 +36,7 @@ public class Product implements Serializable{
 	@MapKeyEnumerated(EnumType.STRING)
 	@ElementCollection
 	private Map<Price, Integer> price;
-	@ManyToOne
+	@ManyToOne(cascade = { PERSIST, MERGE })
 	private Category category;
 	
 	public enum Price{
