@@ -10,6 +10,7 @@ import lombok.Data;
 public class AccountForm {
 	private String name;
 	private String email;
+	private String password;
 	private Role role;
 	private LocalDate registAt;
 	private boolean activated;
