@@ -40,6 +40,11 @@
 		<dependency>
 			<groupId>com.jdc.weekend</groupId>
 			<artifactId>balance-data-api</artifactId>
-		</dependency>				
+		</dependency>	
+		
+		<dependency>
+			<groupId>com.jdc.weekend</groupId>
+			<artifactId>balance-data-impl</artifactId>
+		</dependency>			
 	</dependencies>
 </project>

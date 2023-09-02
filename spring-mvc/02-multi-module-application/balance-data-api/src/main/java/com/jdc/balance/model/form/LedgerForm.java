@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class LedgerForm {
 
-	private int id;
+	private String username;
 	private String name;
 	private LedgerType type;
 	private boolean deleted;
