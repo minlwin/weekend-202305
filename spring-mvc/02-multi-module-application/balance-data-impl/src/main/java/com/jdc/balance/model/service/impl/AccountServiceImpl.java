@@ -1,14 +1,17 @@
 package com.jdc.balance.model.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.jdc.balance.model.constants.Role;
 import com.jdc.balance.model.dto.AccountDto;
@@ -16,11 +19,22 @@ import com.jdc.balance.model.form.AccountForm;
 import com.jdc.balance.model.service.AccountService;
 import com.jdc.balance.model.service.helper.AccountFormHelper;
 
+import lombok.val;
+
 @Service
 public class AccountServiceImpl implements AccountService{
 	
 	private SimpleJdbcInsert insert;
 	private JdbcTemplate template;
+	
+	private final RowMapper<AccountDto> rowMapper = (rs, rowNum) -> new AccountDto(
+			rs.getInt("id"), 
+			rs.getString("name"), 
+			rs.getString("email"), 
+			Role.valueOf(rs.getString("role")), 
+			rs.getDate("regist_at").toLocalDate(), 
+			rs.getBoolean("activated"), 
+			rs.getBoolean("deleted"));
 	
 	public AccountServiceImpl(DataSource dataSource) {
 		template = new JdbcTemplate(dataSource);
@@ -40,27 +54,62 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	@Transactional
 	public AccountDto create(AccountForm form) {
-		var id = insert.executeAndReturnKey(AccountFormHelper.convert(form)).intValue();
-		return new AccountDto(id, form.getName(), form.getEmail(), form.getRole(), form.getRegistAt(), form.isActivated(), form.isDeleted());
+		var id = insert.executeAndReturnKey(AccountFormHelper.insertParams(form)).intValue();
+		return findById(id);
 	}
 
 	@Override
 	@Transactional
 	public AccountDto update(int id, AccountForm form) {
-		// TODO Auto-generated method stub
-		return null;
+		var sql = """
+			update account set name = ?, email = ?, role = ?, 
+			activated = ?, deleted = ? where id = ?""";
+		
+		template.update(sql, stmt -> {
+			stmt.setString(1, form.getName());
+			stmt.setString(2, form.getEmail());
+			stmt.setString(3, form.getRole().name());
+			stmt.setBoolean(4, form.isActivated());
+			stmt.setBoolean(5, form.isDeleted());
+			stmt.setInt(6, id);
+		});
+		
+		return findById(id);
 	}
 
 	@Override
 	public Optional<AccountDto> findByEmail(String email) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		val sql = "select * from account where email = ?";
+		return template.queryForStream(sql, rowMapper, email).findAny();
 	}
 
 	@Override
 	public List<AccountDto> search(Optional<Role> role, Optional<String> name, Optional<Boolean> deleted) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		var sql = new StringBuffer("select * from account where 1 = 1");
+		var params = new ArrayList<Object>();
+		
+		if(role.isPresent()) {
+			sql.append(" and role = ?");
+			params.add(role.get().name());
+		}
+		
+		if(name.filter(StringUtils::hasLength).isPresent()) {
+			sql.append(" and lower(name) like ?");
+			params.add(name.get().toLowerCase().concat("%"));
+		}
+		
+		if(deleted.isPresent()) {
+			sql.append(" and deleted = ?");
+			params.add(deleted.get());
+		}
+		
+		return template.query(sql.toString(), rowMapper, params.toArray());
+	}
+
+	private AccountDto findById(int id) {
+		val sql = "select * from account where id = ?";
+		return template.queryForStream(sql, rowMapper, id).findAny().get();
 	}
 
 }

@@ -8,7 +8,7 @@ import com.jdc.balance.model.form.AccountForm;
 
 public class AccountFormHelper {
 
-	public static Map<String, Object> convert(AccountForm form) {
+	public static Map<String, Object> insertParams(AccountForm form) {
 		
 		var map = new HashMap<String, Object>();
 		map.put("name", form.getName());
@@ -21,4 +21,5 @@ public class AccountFormHelper {
 		
 		return map;
 	}
+
 }
