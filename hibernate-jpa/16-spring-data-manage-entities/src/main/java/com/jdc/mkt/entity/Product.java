@@ -1,14 +1,16 @@
 package com.jdc.mkt.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.jdc.mkt.listener.EnableTimeListener;
+import com.jdc.mkt.listener.EnableTimes;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +21,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name="product")
-public class Product implements Serializable{
+@EntityListeners(EnableTimeListener.class)
+public class Product  implements EnableTimes{
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -27,6 +30,9 @@ public class Product implements Serializable{
 	private int id;
 	private String name;
 	private int price;
+	
+	private Times times;
+	
 	@ManyToOne(cascade = {CascadeType.REMOVE,CascadeType.PERSIST})
 	private Category category;
 	
@@ -35,7 +41,38 @@ public class Product implements Serializable{
 		super();
 		this.name = name;
 		this.price = price;
+		
 	}
+
+
 	
+
+
+	
+	
+	
+//	@PrePersist
+//	void beforePersist() {
+//		System.out.println("Before persist");
+//	}
+//	@PostPersist
+//	void afterPersist() {
+//		System.out.println("After persist");
+//	}
+//	
+//	@PostLoad
+//	void afterFind() {
+//		System.out.println("After find");
+//	}
+//	
+//	@PreRemove
+//	void beforeRemove() {
+//		System.out.println("Before remove");
+//	}
+//	
+//	@PreUpdate
+//	void beforeUpdate() {
+//		System.out.println("Before update");
+//	}
 	
 }

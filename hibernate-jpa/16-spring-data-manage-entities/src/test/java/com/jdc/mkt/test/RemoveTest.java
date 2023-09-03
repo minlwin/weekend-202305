@@ -1,7 +1,5 @@
 package com.jdc.mkt.test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Test;
 
 import com.jdc.mkt.entity.Category;
