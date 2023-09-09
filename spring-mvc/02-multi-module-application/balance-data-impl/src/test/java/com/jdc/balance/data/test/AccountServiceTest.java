@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -20,7 +21,8 @@ import com.jdc.balance.model.service.AccountService;
 
 @SpringJUnitConfig(classes = DatabaseConfiguration.class)
 @Sql(scripts = {
-		"/sql/init-database.sql"
+		"/sql/init-database.sql",
+		"/sql/insert-account.sql",
 })
 public class AccountServiceTest {
 
@@ -70,7 +72,20 @@ public class AccountServiceTest {
 
 	}
 
+	@ParameterizedTest
+	@CsvFileSource(resources = "/csv/account/creation-duplicate.txt", delimiter = '\t')
 	void test_create_duplication_error(String name, String email, Role role, String password, LocalDate registAt) {
+		// prepare inputs
+		var form = new AccountForm();
+		form.setActivated(true);
+		form.setName(name);
+		form.setEmail(email);
+		form.setRole(role);
+		form.setPassword(password);
+		form.setRegistAt(registAt);
 		
+		assertThrows(DuplicateKeyException.class, () -> service.create(form));
 	}
+	
+	
 }
