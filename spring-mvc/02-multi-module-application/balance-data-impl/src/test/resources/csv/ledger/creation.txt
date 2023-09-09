@@ -1,0 +1,6 @@
+thidar@gmail.com	Credit	Maintenance Fees	FALSE	7	0	0
+thidar@gmail.com	Debit	Transportation	FALSE	7	0	0
+thidar@gmail.com	Credit	Developing Fees	FALSE	7	0	0
+koko@gmail.com	Debit	Transportation	FALSE	7	0	0
+koko@gmail.com	Credit	Developing Fees	FALSE	7	0	0
+koko@gmail.com	Debit	HR Fees	FALSE	7	0	0

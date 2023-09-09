@@ -80,7 +80,7 @@ public class LedgerServiceImpl implements LedgerService{
 
 	@Override
 	public Optional<LedgerDto> findById(int id) {
-		var sql = "%s where id = ? %s".formatted(SELECT, GROUP_BY);
+		var sql = "%s where l.id = ? %s".formatted(SELECT, GROUP_BY);
 		return template.queryForStream(sql, rowMapper, id).findAny();
 	}
 
