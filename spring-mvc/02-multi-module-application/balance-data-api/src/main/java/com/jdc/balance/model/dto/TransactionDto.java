@@ -10,8 +10,8 @@ public record TransactionDto(
 		int ledgerId,
 		String ledgerName,
 		LocalDate issueAt,
-		long amount,
-		String remark
+		String remark,
+		long amount
 		) {
 
 }
