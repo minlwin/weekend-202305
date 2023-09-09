@@ -46,7 +46,7 @@ public class AccountServiceImpl implements AccountService{
 				"email", 
 				"password", 
 				"role", 
-				"regist_ad", 
+				"regist_at", 
 				"activated", 
 				"deleted"));
 	}
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements AccountService{
 		template.update(sql, stmt -> {
 			stmt.setString(1, form.getName());
 			stmt.setString(2, form.getEmail());
-			stmt.setString(3, form.getRole().name());
+			stmt.setString(3, null != form.getRole() ? form.getRole().name() : null);
 			stmt.setBoolean(4, form.isActivated());
 			stmt.setBoolean(5, form.isDeleted());
 			stmt.setInt(6, id);

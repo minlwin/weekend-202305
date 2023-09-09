@@ -14,8 +14,8 @@ public class AccountFormHelper {
 		map.put("name", form.getName());
 		map.put("email", form.getEmail());
 		map.put("password", form.getPassword());
-		map.put("role", form.getRole().name());
-		map.put("regist_ad", Date.valueOf(form.getRegistAt()));
+		map.put("role", null != form.getRole() ? form.getRole().name() : null);
+		map.put("regist_at", Date.valueOf(form.getRegistAt()));
 		map.put("activated", form.isActivated());
 		map.put("deleted", form.isDeleted());
 		
