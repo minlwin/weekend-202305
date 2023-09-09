@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class Category implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String name;
 	@OneToMany(mappedBy = "category")
-	private List<Product> list = new ArrayList<Product>();
+	private List<Product> products = new ArrayList<Product>();
 
 	public Category(String name) {
 		super();
@@ -39,7 +40,7 @@ public class Category implements Serializable {
 	public void addProduct(Product... products) {
 		for (Product p : products) {
 			p.setCategory(this);
-			list.add(p);
+			this.products.add(p);
 		}
 	}
 
