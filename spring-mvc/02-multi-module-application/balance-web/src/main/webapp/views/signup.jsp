@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %> 
-<%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>       
+<%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>   
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,22 +26,25 @@
 				<i class="bi-person-plus"></i>
 			</div>
 		
-			<form action="/admin/home" class="sign-form">
+			<sf:form action="/signup" method="post" modelAttribute="form" cssClass="sign-form">
 				<!-- Email -->
 				<div class="mb-3">
 					<label class="form-label">Member Name</label>
-					<input placeholder="Enter Your Name" class="form-control" />
+					<sf:input path="name" placeholder="Enter Your Name" cssClass="form-control"/>
+					<sf:errors path="name" cssClass="text-secondary" />
 				</div>
 
 				<div class="mb-3">
 					<label class="form-label">Email Address</label>
-					<input type="email" placeholder="Enter Email for Login" class="form-control" />
+					<sf:input path="email" type="email" placeholder="Enter Email" cssClass="form-control"/>
+					<sf:errors path="email" cssClass="text-secondary" />
 				</div>
 				
 				<!-- Password -->
 				<div class="mb-3">
 					<label class="form-label">Password</label>
-					<input type="password" placeholder="Enter Password" class="form-control" />
+					<sf:input path="password" type="password" placeholder="Enter Password" cssClass="form-control"/>
+					<sf:errors path="password" cssClass="text-secondary" />
 				</div>
 				
 				<div>
@@ -54,7 +58,7 @@
 						<i class="bi bi-unlock"></i> Sign In
 					</a>
 				</div>
-			</form>
+			</sf:form>
 		</div>	
 	</app:anonymous-layout>
 

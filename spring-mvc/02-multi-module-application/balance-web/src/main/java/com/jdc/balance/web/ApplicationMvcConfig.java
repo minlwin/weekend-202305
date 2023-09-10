@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.jdc.balance.web.controller")
-public class MvcConfig implements WebMvcConfigurer {
+public class ApplicationMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -22,7 +22,6 @@ public class MvcConfig implements WebMvcConfigurer {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("welcome");
 		registry.addViewController("/signin").setViewName("signin");
-		registry.addViewController("/signup").setViewName("signup");
 	}
 
 	@Override

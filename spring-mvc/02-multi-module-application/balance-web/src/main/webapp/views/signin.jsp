@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %> 
-<%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>       
+<%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>   
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,17 +28,17 @@
 				<i class="bi-unlock"></i>
 			</div>
 		
-			<form action="/member/home" class="sign-form">
+			<sf:form action="/signin" method="post" cssClass="sign-form">
 				<!-- Email -->
 				<div class="mb-3">
 					<label class="form-label">Email Address</label>
-					<input type="email" placeholder="Enter Email for Login" class="form-control" />
+					<input name="username" type="email" placeholder="Enter Email for Login" class="form-control" />
 				</div>
 				
 				<!-- Password -->
 				<div class="mb-3">
 					<label class="form-label">Password</label>
-					<input type="password" placeholder="Enter Password" class="form-control" />
+					<input name="password" type="password" placeholder="Enter Password" class="form-control" />
 				</div>
 				
 				<div>
@@ -51,7 +52,7 @@
 						<i class="bi bi-person-plus"></i> Sign Up
 					</a>
 				</div>
-			</form>
+			</sf:form>
 		</div>
 	
 	</app:anonymous-layout>

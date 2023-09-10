@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.ClassOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,6 +39,16 @@ public class LedgerServiceTest {
 	
 	@Autowired
 	private LedgerService service;
+	
+	@Disabled
+	@ParameterizedTest
+	@CsvSource({
+		
+	})
+	void test_search(String username, Optional<LedgerType> type, Optional<String> name, int size) {
+		
+		service.search(username, type, name);
+	}
 	
 	@Order(1)
 	@Nested
@@ -116,19 +129,26 @@ public class LedgerServiceTest {
 		
 	}
 	
-	@Disabled
 	@Order(3)
 	@Nested
 	class UpdateTest {
 		
-	}
-	
-	@Disabled
-	@Order(4)
-	@Nested
-	class SearchTest {
+		@Disabled
+		@ParameterizedTest
+		@CsvFileSource(resources = "/csv/ledger/update.txt", delimiter = '\t')
+		void test_success() {
+			
+		}
+		
+		@Disabled
+		@ParameterizedTest
+		@CsvFileSource(resources = "/csv/ledger/update_not_found.txt", delimiter = '\t')
+		void test_not_found() {
+			
+		}
 		
 	}
+	
 	
 
 }

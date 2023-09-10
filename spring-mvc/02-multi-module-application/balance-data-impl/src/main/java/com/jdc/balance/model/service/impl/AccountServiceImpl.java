@@ -31,6 +31,7 @@ public class AccountServiceImpl implements AccountService{
 			rs.getInt("id"), 
 			rs.getString("name"), 
 			rs.getString("email"), 
+			rs.getString("password"),
 			Role.valueOf(rs.getString("role")), 
 			rs.getDate("regist_at").toLocalDate(), 
 			rs.getBoolean("activated"), 
@@ -110,6 +111,11 @@ public class AccountServiceImpl implements AccountService{
 	private AccountDto findById(int id) {
 		val sql = "select * from account where id = ?";
 		return template.queryForStream(sql, rowMapper, id).findAny().get();
+	}
+
+	@Override
+	public long getCount() {
+		return template.queryForObject("select count(id) from account", Long.class);
 	}
 
 }

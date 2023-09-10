@@ -2,6 +2,8 @@ package com.jdc.balance.web;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.jdc.balance.model.config.DatabaseConfiguration;
+
 public class ApplicationLoader extends AbstractAnnotationConfigDispatcherServletInitializer{
 
 	@Override
@@ -11,7 +13,7 @@ public class ApplicationLoader extends AbstractAnnotationConfigDispatcherServlet
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] {MvcConfig.class};
+		return new Class<?>[] {DatabaseConfiguration.class, ApplicationSecurityConfig.class, ApplicationMvcConfig.class};
 	}
 
 	@Override

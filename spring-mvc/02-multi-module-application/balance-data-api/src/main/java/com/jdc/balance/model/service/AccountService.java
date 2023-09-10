@@ -16,4 +16,6 @@ public interface AccountService {
 	Optional<AccountDto> findByEmail(String email);
 	
 	List<AccountDto> search(Optional<Role> role, Optional<String> name, Optional<Boolean> deleted);
+
+	long getCount();
 }

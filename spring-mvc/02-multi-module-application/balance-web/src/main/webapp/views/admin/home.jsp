@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>        
 <%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html>
@@ -28,7 +29,7 @@
 			
 			<ul class="navbar-nav">
 				<li class="nav-item">
-					<a href="/" class="nav-link">
+					<a id="signOutMenu" class="nav-link">
 						<i class="bi-lock"></i> Sign Out
 					</a>
 				</li>
@@ -102,6 +103,11 @@
 		<app:pagination></app:pagination>
 	
 	</div>
+	
+	<sf:form cssClass="d-none" id="signOutForm" action="/signout" method="post">
+	</sf:form>
+	
+	<script type="text/javascript" src="/js/signout.js"></script>
 
 </body>
 </html>
