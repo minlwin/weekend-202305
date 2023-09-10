@@ -1,0 +1,6 @@
+1	Service Charges	Credit	2	1056429
+2	Office Usage	Debit	1	25000
+3	Office Rental Fees	Debit	0	0
+4	Comercial Fees	Debit	1	130000
+5	Monthly Subscription Fees	Credit	3	14441274
+6	Registration Fees	Credit	0	0

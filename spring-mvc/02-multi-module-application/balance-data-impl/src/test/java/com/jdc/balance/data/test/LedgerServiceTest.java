@@ -3,6 +3,7 @@ package com.jdc.balance.data.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.ClassOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Disabled;
@@ -11,8 +12,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -27,6 +30,7 @@ import com.jdc.balance.model.service.LedgerService;
 		"/sql/init-database.sql",
 		"/sql/insert-account.sql",
 		"/sql/insert-ledger.sql",
+		"/sql/insert-transaction.sql",
 })
 public class LedgerServiceTest {
 	
@@ -39,7 +43,7 @@ public class LedgerServiceTest {
 
 		@ParameterizedTest
 		@CsvFileSource(resources = "/csv/ledger/creation.txt", delimiter = '\t')
-		void test_create(String username, LedgerType type, String name, boolean deleted, int id, long amount, long count) {
+		void test_success(String username, LedgerType type, String name, boolean deleted, int id, long amount, long count) {
 			
 			var form = new LedgerForm();
 			form.setUsername(username);
@@ -57,10 +61,9 @@ public class LedgerServiceTest {
 		
 		}
 		
-		@Disabled
 		@ParameterizedTest
 		@CsvFileSource(resources = "/csv/ledger/creation-empty.txt", delimiter = '\t')
-		void test_create_empty(String username, LedgerType type, String name, boolean deleted) {
+		void test_empty(String username, LedgerType type, String name, boolean deleted) {
 			var form = new LedgerForm();
 			form.setUsername(username);
 			form.setType(type);
@@ -69,12 +72,47 @@ public class LedgerServiceTest {
 			
 			assertThrows(DataIntegrityViolationException.class, () -> service.create(form));
 		}
+		
+		@ParameterizedTest
+		@CsvFileSource(resources = "/csv/ledger/creation-duplicate.txt", delimiter = '\t')
+		void test_duplication(String username, LedgerType type, String name, boolean deleted) {
+			var form = new LedgerForm();
+			form.setUsername(username);
+			form.setType(type);
+			form.setName(name);
+			form.setDeleted(deleted);
+			
+			assertThrows(DuplicateKeyException.class, () -> service.create(form));
+		}
 	}
 	
-	@Disabled
 	@Order(2)
 	@Nested
 	class FindByIdTest {
+		
+		
+		@ParameterizedTest
+		@CsvFileSource(resources = "/csv/ledger/find_by_id.txt", delimiter = '\t')
+		void test_success(int id, String name, LedgerType type, long count, long amount) {
+			
+			var result = service.findById(id);
+			
+			assertTrue(result.isPresent());
+			var data = result.get();
+			
+			assertEquals(id, data.id());
+			assertEquals(name, data.name());
+			assertEquals(type, data.type());
+			assertEquals(count, data.transactionCount());
+			assertEquals(amount, data.transactionAmount());
+		}
+		
+		@ParameterizedTest
+		@ValueSource(ints = {0, 7})
+		void test_empty(int id) {
+			var result = service.findById(id);
+			assertTrue(result.isEmpty());
+		}
 		
 	}
 	

@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -39,11 +40,12 @@ public class LedgerServiceImpl implements LedgerService{
 					rs.getLong("tx_amount"));
 			
 	private static final String SELECT = """
-			select l.id, l.type, l.name, count(t.id) tx_count, sum(ti.qantity * ti.unit_price) tx_amount 
-			from ledger l join transaction t on t.ledger_id = l.id 
-			join transaction_item ti on ti.transaction_id = t.id""";
+			select rs.id, rs.type, rs.name, count(rs.tx_id) tx_count, sum(tx_amount) tx_amount 
+			from(select l.id, l.type, l.name, t.id tx_id, sum(ti.quantity * ti.unit_price) tx_amount 
+			from ledger l left join transaction t on t.ledger_id = l.id 
+			left join transaction_item ti on ti.transaction_id = t.id """;
 	
-	private static final String GROUP_BY = " group by l.id, l.type, l.name";
+	private static final String GROUP_BY = "group by l.id, l.type, l.name, t.id) rs  group by rs.id, rs.type, rs.name";
 			
 	public LedgerServiceImpl(DataSource dataSource) {
 		template = new JdbcTemplate(dataSource);
@@ -57,7 +59,7 @@ public class LedgerServiceImpl implements LedgerService{
 	public LedgerDto create(LedgerForm form) {
 		var id = insert.executeAndReturnKey(LedgerFormHelper.insertParams(form, 
 				username -> accountService.findByEmail(username)
-					.orElseThrow(() -> new IllegalArgumentException("There is no account to create ledger."))))
+					.orElseThrow(() -> new DataIntegrityViolationException("There is no account to create ledger."))))
 				.intValue();
 		return findById(id).orElseThrow();
 	}

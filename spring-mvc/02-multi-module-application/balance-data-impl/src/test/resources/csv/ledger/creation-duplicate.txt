@@ -1,0 +1,4 @@
+thidar@gmail.com	Credit	Service Charges	FALSE
+thidar@gmail.com	Debit	Office Usage	FALSE
+koko@gmail.com	Debit	Comercial Fees	FALSE
+koko@gmail.com	Credit	Monthly Subscription Fees	FALSE
