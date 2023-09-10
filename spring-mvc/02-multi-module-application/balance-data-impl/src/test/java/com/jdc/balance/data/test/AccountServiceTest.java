@@ -6,8 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -128,7 +129,6 @@ public class AccountServiceTest {
 		assertTrue(result.isEmpty());
 	}
 	
-	@Disabled
 	@Order(6)
 	@ParameterizedTest
 	@CsvFileSource(resources = "/csv/account/update.txt", delimiter = '\t')
@@ -154,37 +154,69 @@ public class AccountServiceTest {
 		assertEquals(registAt, result.registAt());
 	}
 	
-	@Disabled
 	@Order(7)
 	@ParameterizedTest
 	@CsvFileSource(resources = "/csv/account/update-duplicate.txt", delimiter = '\t')
 	void test_update_duplicate(int id, String name, String email, Role role, String password, LocalDate registAt, boolean activated, boolean deleted) {
+		var form = new AccountForm();
+		form.setName(name);
+		form.setEmail(email);
+		form.setRole(role);
+		form.setPassword(password);
+		form.setRegistAt(registAt);
+		form.setActivated(activated);
+		form.setDeleted(deleted);
 		
+		assertThrows(DuplicateKeyException.class, () -> service.update(id, form));
 	}
 	
-	@Disabled
 	@Order(8)
 	@ParameterizedTest
 	@CsvFileSource(resources = "/csv/account/update-empty.txt", delimiter = '\t')
 	void test_update_empty(int id, String name, String email, Role role, String password, LocalDate registAt, boolean activated, boolean deleted) {
+		var form = new AccountForm();
+		form.setName(name);
+		form.setEmail(email);
+		form.setRole(role);
+		form.setPassword(password);
+		form.setRegistAt(registAt);
+		form.setActivated(activated);
+		form.setDeleted(deleted);
 		
+		assertThrows(DataIntegrityViolationException.class, () -> service.update(id, form));
 	}
 
-	@Disabled
 	@Order(8)
 	@ParameterizedTest
 	@CsvSource({
 		"7,TestName,test@gmail.com,Admin,test,2023-09-09,true,false"
 	})
 	void test_update_no_data(int id, String name, String email, Role role, String password, LocalDate registAt, boolean activated, boolean deleted) {
+		var form = new AccountForm();
+		form.setName(name);
+		form.setEmail(email);
+		form.setRole(role);
+		form.setPassword(password);
+		form.setRegistAt(registAt);
+		form.setActivated(activated);
+		form.setDeleted(deleted);
 		
+		assertThrows(NoSuchElementException.class, () -> service.update(id, form));
 	}
 	
-	@Disabled
 	@Order(8)
 	@ParameterizedTest
-	@CsvFileSource(resources = "/csv/account/search.txt", delimiter = '\t')
-	void test_search() {
+	@CsvSource({
+		",,,6",
+		"Admin,,,2",
+		",th,,3",
+		",,true,0",
+		"Admin,thau,false,1"
+	})
+	void test_search(Role role, String name, Boolean deleted, int size) {
 		
+		var result = service.search(Optional.ofNullable(role), Optional.ofNullable(name), Optional.ofNullable(deleted));
+		
+		assertEquals(size, result.size());
 	}	
 }

@@ -28,6 +28,7 @@ import com.jdc.balance.model.service.TransactionService;
 import com.jdc.balance.model.service.helper.TransactionFormHelper;
 
 @Service
+@Transactional(readOnly = true)
 public class TransactionServiceImpl implements TransactionService{
 	
 	@Autowired

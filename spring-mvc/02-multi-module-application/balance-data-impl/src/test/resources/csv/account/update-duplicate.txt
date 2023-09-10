@@ -1,0 +1,3 @@
+1	Thaw Dar	thawdar@gmail.com	Admin	Password	2023-09-10	TRUE	FALSE
+2	Thaung Htike	thaung@gmail.com	Admin	Password	2023-09-10	TRUE	FALSE
+3	Nilar	nilar@gmail.com	Admin	Password	2023-09-10	TRUE	FALSE

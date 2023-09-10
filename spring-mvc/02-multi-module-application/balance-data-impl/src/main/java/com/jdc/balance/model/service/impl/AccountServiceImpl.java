@@ -1,5 +1,6 @@
 package com.jdc.balance.model.service.impl;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import com.jdc.balance.model.service.helper.AccountFormHelper;
 import lombok.val;
 
 @Service
+@Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService{
 	
 	private SimpleJdbcInsert insert;
@@ -63,16 +65,17 @@ public class AccountServiceImpl implements AccountService{
 	@Transactional
 	public AccountDto update(int id, AccountForm form) {
 		var sql = """
-			update account set name = ?, email = ?, role = ?, 
+			update account set name = ?, email = ?, role = ?, regist_at = ?, 
 			activated = ?, deleted = ? where id = ?""";
 		
 		template.update(sql, stmt -> {
 			stmt.setString(1, form.getName());
 			stmt.setString(2, form.getEmail());
 			stmt.setString(3, null != form.getRole() ? form.getRole().name() : null);
-			stmt.setBoolean(4, form.isActivated());
-			stmt.setBoolean(5, form.isDeleted());
-			stmt.setInt(6, id);
+			stmt.setDate(4, form.getRegistAt() == null ? null : Date.valueOf(form.getRegistAt()));
+			stmt.setBoolean(5, form.isActivated());
+			stmt.setBoolean(6, form.isDeleted());
+			stmt.setInt(7, id);
 		});
 		
 		return findById(id);

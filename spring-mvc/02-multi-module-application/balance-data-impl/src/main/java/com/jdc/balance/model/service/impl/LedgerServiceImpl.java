@@ -24,6 +24,7 @@ import com.jdc.balance.model.service.LedgerService;
 import com.jdc.balance.model.service.helper.LedgerFormHelper;
 
 @Service
+@Transactional(readOnly = true)
 public class LedgerServiceImpl implements LedgerService{
 	
 	@Autowired
