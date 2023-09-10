@@ -49,12 +49,11 @@ public class TransactionServiceImpl implements TransactionService{
 			group by t.id, l.type, l.name, t.issue_at, t.remark""";
 	
 	private final String LAST_BALANCE_SQL = """
-			select sum(ti.unit_price * ti.quantity) from from transaction t 
+			select case when sum(ti.unit_price * ti.quantity) is null then 0 else sum(ti.unit_price * ti.quantity) end from transaction t 
 			join ledger l on t.ledger_id = l.id 
 			join account a on t.account_id = a.id 
 			join transaction_item ti on t.id = ti.transaction_id 
-			where a.email = ? and l.type = ? and t.issue_at < ? 
-			order by t.id""";
+			where a.email = ? and l.type = ? and t.issue_at < ?""";
 	
 	private final RowMapper<TransactionDto> transRowMapper;
 	private final RowMapper<TransactionItemDto> itemRowMapper;
@@ -78,6 +77,10 @@ public class TransactionServiceImpl implements TransactionService{
 	@Transactional
 	public TransactionDetailsDto create(TransactionForm form) {
 		
+		if(null == form || null == form.getItems() || form.getItems().isEmpty()) {
+			throw new IllegalArgumentException("Items are require for transaction.");
+		}
+		
 		// Insert Transaction
 		var transactionId = insert.executeAndReturnKey(TransactionFormHelper.insertParams(form, 
 				username -> accountService.findByEmail(username)
@@ -96,6 +99,15 @@ public class TransactionServiceImpl implements TransactionService{
 	@Override
 	@Transactional
 	public TransactionDetailsDto update(long id, TransactionForm form) {
+		
+		if(null == form || null == form.getItems() || form.getItems().isEmpty()) {
+			throw new IllegalArgumentException("Items are require for transaction.");
+		}
+		
+		if(accountService.findByEmail(form.getUsername()).isEmpty()) {
+			throw new IllegalArgumentException("Invalid account.");
+		}
+		
 		// Delete Items
 		template.update("delete from transaction_item where transaction_id = ?", id);
 		
@@ -105,7 +117,7 @@ public class TransactionServiceImpl implements TransactionService{
 			where id = ?""", 
 				stmt -> {
 					stmt.setInt(1, form.getLedgerId());
-					stmt.setDate(2, Date.valueOf(form.getIssueAt()));
+					stmt.setDate(2, null == form.getIssueAt() ? null : Date.valueOf(form.getIssueAt()));
 					stmt.setString(3, form.getRemark());
 					stmt.setBoolean(4, form.isDeleted());
 					stmt.setLong(5, id);
@@ -152,26 +164,26 @@ public class TransactionServiceImpl implements TransactionService{
 		sql.append(" where a.email = ?");
 		params.add(username);
 		
-		type.ifPresent(value -> {
+		if(null != type && type.isPresent()) {
 			sql.append(" and l.type = ?");
-			params.add(value);
-		});
+			params.add(type.get().name());
+		}
 		
-		ledger.filter(StringUtils::hasLength).ifPresent(value -> {
+		if(null != ledger && ledger.filter(StringUtils::hasLength).isPresent()) {
 			sql.append(" and lower(l.name) like ?");
-			params.add("%%%s%%".formatted(value.toLowerCase()));
-		});
+			params.add("%%%s%%".formatted(ledger.get().toLowerCase()));
+		}
 		
-		from.ifPresent(value -> {
+		if(null != from && from.isPresent()) {
 			sql.append(" and t.issue_at >= ?");
-			params.add(Date.valueOf(value));
-		});
+			params.add(Date.valueOf(from.get()));
+		}
 		
-		to.ifPresent(value -> {
+		if(null != to && to.isPresent()) {
 			sql.append(" and t.issue_at <= ?");
-			params.add(Date.valueOf(value));
-		});
-		
+			params.add(Date.valueOf(to.get()));
+		}
+
 		sql.append(" ").append(GROUP_BY);
 		sql.append(" order by t.id desc");
 
@@ -189,18 +201,18 @@ public class TransactionServiceImpl implements TransactionService{
 		sql.append(" where a.email = ?");
 		params.add(username);
 
-		from.ifPresent(value -> {
+		if(null != from && from.isPresent()) {
 			sql.append(" and t.issue_at >= ?");
-			params.add(Date.valueOf(value));
-		});
+			params.add(Date.valueOf(from.get()));
+		}
 		
-		to.ifPresent(value -> {
+		if(null != to && to.isPresent()) {
 			sql.append(" and t.issue_at <= ?");
-			params.add(Date.valueOf(value));
-		});
+			params.add(Date.valueOf(to.get()));
+		}
 
 		sql.append(" ").append(GROUP_BY);
-		sql.append(" order by t.id desc");
+		sql.append(" order by t.id");
 		
 		var transactions = template.query(sql.toString(), transRowMapper, params.toArray());
 		var lastBalance = findLastBlance(username, from);
@@ -229,6 +241,6 @@ public class TransactionServiceImpl implements TransactionService{
 	}
 
 	private long findLastBlance(String username, LedgerType type, LocalDate from) {
-		return template.queryForObject(LAST_BALANCE_SQL, Long.class, username, type, Date.valueOf(from));
+		return template.queryForObject(LAST_BALANCE_SQL, Long.class, username, type.name(), Date.valueOf(from));
 	}
 }

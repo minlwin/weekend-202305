@@ -13,12 +13,73 @@ public class TransactionServiceTestInputs {
 
 	public static Stream<Arguments> creationTestSuccess() {
 		return Stream.of(
-			Arguments.of(data11(), 8),
-			Arguments.of(data12(), 8)
+			Arguments.of(data1(), 8),
+			Arguments.of(data2(), 8)
 				);
 	}
 	
-	private static TransactionForm data11() {
+	public static Stream<Arguments> creationTestEmptyError() {
+		
+		var data1 = data1();
+		data1.setIssueAt(null);
+		var data2 = data1();
+		data2.setLedgerId(0);
+		
+		return Stream.of(
+				Arguments.of(data1),
+				Arguments.of(data2));
+	}
+	
+	public static Stream<Arguments> creationTestNoUserError() {
+		
+		var data1 = data1();
+		data1.setUsername(null);
+		var data2 = data1();
+		data2.setUsername("");
+		
+		return Stream.of(
+				Arguments.of(data1),
+				Arguments.of(data2));
+	}
+
+	public static Stream<Arguments> creationTestNoItemsError() {
+		
+		var data1 = data1();
+		data1.setItems(new ArrayList<>());
+		var data2 = data1();
+		data2.setItems(null);
+		
+		return Stream.of(
+				Arguments.of(data1),
+				Arguments.of(data2));
+	}
+	
+	public static Stream<Arguments> updateTestSuccess() {
+		return Stream.of(Arguments.of(1, data1()), Arguments.of(2, data2()));
+	}
+	
+	public static Stream<Arguments> updateTestEmptyError() {
+		var data1 = data1();
+		data1.setIssueAt(null);
+		var data2 = data1();
+		data2.setLedgerId(0);
+		
+		return Stream.of(Arguments.of(1, data1), Arguments.of(2, data2));
+	}
+
+	public static Stream<Arguments> updateTestNoItemError() {
+		var data = data1();
+		data.setItems(null);
+		return Stream.of(Arguments.of(1, data));
+	}
+
+	public static Stream<Arguments> updateTestNoUserError() {
+		var data = data1();
+		data.setUsername(null);
+		return Stream.of(Arguments.of(1, data));
+	}
+
+	private static TransactionForm data1() {
 		var form = new TransactionForm();
 		form.setUsername("thidar@gmail.com");
 		form.setLedgerId(1);
@@ -32,7 +93,7 @@ public class TransactionServiceTestInputs {
 		return form;
 	}
 	
-	private static TransactionForm data12() {
+	private static TransactionForm data2() {
 		var form = new TransactionForm();
 		form.setUsername("koko@gmail.com");
 		form.setLedgerId(4);
