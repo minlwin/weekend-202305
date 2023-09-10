@@ -134,7 +134,7 @@ public class TransactionServiceImpl implements TransactionService{
 	}
 
 	private Optional<TransactionDto> findTransactionById(long id) {
-		return template.queryForStream("%s where id = ? %s".formatted(SELECT, GROUP_BY), 
+		return template.queryForStream("%s where t.id = ? %s".formatted(SELECT, GROUP_BY), 
 				transRowMapper, id).findAny();
 	}
 
