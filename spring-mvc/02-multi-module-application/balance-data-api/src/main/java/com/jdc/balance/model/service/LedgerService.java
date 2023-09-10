@@ -15,5 +15,5 @@ public interface LedgerService {
 	
 	Optional<LedgerDto> findById(int id);
 	
-	List<LedgerDto> search(String username, Optional<LedgerType> type, Optional<String> name);
+	List<LedgerDto> search(String username, Optional<LedgerType> type, Optional<String> name, Optional<Boolean> optional);
 }

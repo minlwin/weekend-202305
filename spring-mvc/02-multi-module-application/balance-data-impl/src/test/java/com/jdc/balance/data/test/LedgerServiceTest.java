@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.ClassOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestClassOrder;
@@ -40,14 +40,22 @@ public class LedgerServiceTest {
 	@Autowired
 	private LedgerService service;
 	
-	@Disabled
 	@ParameterizedTest
 	@CsvSource({
-		
+		"thidar@gmail.com,,,,3",
+		"thidar@gmail.com,,,false,2",
+		"thidar@gmail.com,Debit,,false,1",
 	})
-	void test_search(String username, Optional<LedgerType> type, Optional<String> name, int size) {
-		
-		service.search(username, type, name);
+	void test_search(String username, LedgerType type, String name, Boolean deleted, int size) {
+		service.search(username, Optional.ofNullable(type), Optional.ofNullable(name), Optional.ofNullable(deleted));
+	}
+	
+	@ParameterizedTest
+	@CsvSource({
+		",Debit,,false,1",
+	})
+	void test_search_with_no_user(String username, LedgerType type, String name, Boolean deleted) {
+		assertThrows(IllegalArgumentException.class, () -> service.search(username, Optional.ofNullable(type), Optional.ofNullable(name), Optional.ofNullable(deleted)));
 	}
 	
 	@Order(1)
@@ -133,22 +141,36 @@ public class LedgerServiceTest {
 	@Nested
 	class UpdateTest {
 		
-		@Disabled
 		@ParameterizedTest
 		@CsvFileSource(resources = "/csv/ledger/update.txt", delimiter = '\t')
-		void test_success() {
+		void test_success(int id, String username, LedgerType type, String name, boolean deleted, long amount, long count) {
+			var form = new LedgerForm();
+			form.setUsername(username);
+			form.setType(type);
+			form.setName(name);
+			form.setDeleted(deleted);
 			
+			var result = service.update(id, form);
+
+			assertNotNull(result);
+			assertEquals(id, result.id());
+			assertEquals(type, result.type());
+			assertEquals(amount, result.transactionAmount());
+			assertEquals(count, result.transactionCount());
 		}
 		
-		@Disabled
 		@ParameterizedTest
 		@CsvFileSource(resources = "/csv/ledger/update_not_found.txt", delimiter = '\t')
-		void test_not_found() {
+		void test_not_found(int id, String username, LedgerType type, String name, boolean deleted) {
+			var form = new LedgerForm();
+			form.setUsername(username);
+			form.setType(type);
+			form.setName(name);
+			form.setDeleted(deleted);
 			
+			assertThrows(NoSuchElementException.class, () -> service.update(id, form));
 		}
 		
 	}
-	
-	
 
 }

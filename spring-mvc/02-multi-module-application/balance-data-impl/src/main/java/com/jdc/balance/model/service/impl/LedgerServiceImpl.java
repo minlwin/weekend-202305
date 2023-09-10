@@ -69,7 +69,7 @@ public class LedgerServiceImpl implements LedgerService{
 	@Transactional
 	public LedgerDto update(int id, LedgerForm form) {
 		
-		var sql = "update ledger name = ?, type = ?, deleted = ? where id = ?";
+		var sql = "update ledger set name = ?, type = ?, deleted = ? where id = ?";
 		
 		template.update(sql, stmt -> {
 			stmt.setString(1, form.getName());
@@ -88,7 +88,7 @@ public class LedgerServiceImpl implements LedgerService{
 	}
 
 	@Override
-	public List<LedgerDto> search(String username, Optional<LedgerType> type, Optional<String> name) {
+	public List<LedgerDto> search(String username, Optional<LedgerType> type, Optional<String> name, Optional<Boolean> deleted) {
 		
 		var sql = new StringBuffer(SELECT);
 		var params = new ArrayList<Object>();
@@ -98,17 +98,22 @@ public class LedgerServiceImpl implements LedgerService{
 		sql.append(" where l.account_id = ?");
 		params.add(account.id());
 		
-		if(type.isPresent()) {
+		if(null != type && type.isPresent()) {
 			sql.append(" and l.type = ?");
 			params.add(type.get().name());
 		}
 		
-		if(name.filter(StringUtils::hasLength).isPresent()) {
+		if(null != name && name.filter(StringUtils::hasLength).isPresent()) {
 			sql.append(" and lower(l.name) like ?");
 			params.add(name.get().toLowerCase().concat("%"));
 		}
 		
-		sql.append(GROUP_BY);
+		if(null != deleted && deleted.isPresent()) {
+			sql.append(" and l.deleted = ?");
+			params.add(deleted.get());
+		}
+		
+		sql.append(" ").append(GROUP_BY);
 		
 		return template.query(sql.toString(), rowMapper, params.toArray());
 	}

@@ -93,17 +93,17 @@ public class AccountServiceImpl implements AccountService{
 		var sql = new StringBuffer("select * from account where 1 = 1");
 		var params = new ArrayList<Object>();
 		
-		if(role.isPresent()) {
+		if(null != role && role.isPresent()) {
 			sql.append(" and role = ?");
 			params.add(role.get().name());
 		}
 		
-		if(name.filter(StringUtils::hasLength).isPresent()) {
+		if(null != name && name.filter(StringUtils::hasLength).isPresent()) {
 			sql.append(" and lower(name) like ?");
 			params.add(name.get().toLowerCase().concat("%"));
 		}
 		
-		if(deleted.isPresent()) {
+		if(null != deleted && deleted.isPresent()) {
 			sql.append(" and deleted = ?");
 			params.add(deleted.get());
 		}
