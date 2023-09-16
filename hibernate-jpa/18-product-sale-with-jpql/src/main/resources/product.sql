@@ -61,7 +61,7 @@
 	
 		insert into sales(customer_id,sale_date) values (1,'20220112');
 		insert into sales(customer_id,sale_date) values (2,'20220405');
-		insert into sales(customer_id,sale_date) values (3,'20230107');
+		insert into sales(customer_id,sale_date) values (3,'20220405');
 		insert into sales(customer_id,sale_date) values (4,'20230222');
 		insert into sales(customer_id,sale_date) values (5,'20230303');
 		insert into sales(customer_id,sale_date) values (6,'20230411');

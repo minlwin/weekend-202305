@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -22,14 +23,12 @@ import jakarta.persistence.EntityManagerFactory;
 @Configuration
 @PropertySource("classpath:/connection.properties")
 @EnableTransactionManagement
-@ComponentScan(basePackages = "com.jdc.mkt.repo")
+@ComponentScan(basePackages = "com.jdc.mkt.model.service")
+@EnableJpaRepositories(basePackages = "com.jdc.mkt.model.repo")
 public class ApplicationConfig {
 
-	@Value("${db.url}") String url;
-	@Value("${db.user}") String user;
-	@Value("${db.password}") String password;
 	@Bean
-	DataSource dataSource() {
+	DataSource dataSource(@Value("${db.url}") String url,@Value("${db.user}") String user,@Value("${db.password}") String password) {
 		var ds = new BoneCPDataSource();
 		ds.setJdbcUrl(url);
 		ds.setUser(user);

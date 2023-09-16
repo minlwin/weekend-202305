@@ -16,27 +16,25 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Table(name = "sale_details")
-public class SaleDetails implements Serializable{
+public class SaleDetails implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@EmbeddedId
 	private SaleDetailsPk id;
-	private int qty;	
+	private int qty;
 	@ManyToOne
 	@MapsId("productId")
-	private Product product;	
+	private Product product;
 	@ManyToOne
 	@MapsId("salesId")
 	private Sales sales;
 	private int total;
-	
-		
+
 	public SaleDetails(int qty, Product product) {
 		super();
 		this.qty = qty;
 		this.product = product;
-		
+
 	}
-	
-	
+
 }
