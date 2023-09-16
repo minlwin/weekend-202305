@@ -42,20 +42,20 @@
 		<h3><i class="bi-people"></i> Member Management</h3>
 	
 		<!-- Search Form -->
-		<form action="${searchAction}" class="row my-3">
+		<form class="row my-3">
 		
 			<div class="col-auto">
 				<label class="form-label">Role</label>
 				<select name="role" class="form-select">
 					<option value="">All Role</option>
-					<option value="Member">Member</option>
-					<option value="Admin">Admin</option>
+					<option value="Member" ${param.role eq 'Member' ? 'selected' : ''}>Member</option>
+					<option value="Admin" ${param.role eq 'Admin' ? 'selected' : ''}>Admin</option>
 				</select>
 			</div>
 						
 			<div class="col-auto">
 				<label class="form-label">Name</label>
-				<input type="text" name="name" placeholder="Search Name" class="form-control" />
+				<input type="text" name="name" placeholder="Search Name" value="${param.name}" class="form-control" />
 			</div>
 			
 			<div class="col btn-wrapper">
@@ -94,10 +94,12 @@
 	
 	</div>
 	
-	<sf:form cssClass="d-none" id="signOutForm" action="/signout" method="post">
+	<c:url value="/signout" var="signOutAction"></c:url>
+	<sf:form cssClass="d-none" id="signOutForm" action="${signOutAction}" method="post">
 	</sf:form>
 	
-	<script type="text/javascript" src="/js/signout.js"></script>
+	<c:url value="/js/signout.js" var="script"></c:url>
+	<script type="text/javascript" src="${script}"></script>
 
 </body>
 </html>

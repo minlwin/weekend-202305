@@ -28,6 +28,7 @@ public class LedgerController {
 	@GetMapping
 	String index(ModelMap model, @RequestParam Optional<LedgerType> type) {
 		var auth = SecurityContextHolder.getContext().getAuthentication();
+		model.put("active", type.isEmpty() ? "All" : type.get().name());
 		model.put("list", service.search(auth.getName(), type, Optional.empty(), Optional.of(false)));
 		return "member/ledgers";
 	}
@@ -35,16 +36,20 @@ public class LedgerController {
 	@PostMapping
 	String save(
 			ModelMap model,
+			@RequestParam Optional<LedgerType> searchType,
 			@RequestParam Optional<Integer> id,
 			@Validated @ModelAttribute("form") LedgerForm form, 
 			BindingResult result) {
 		
 		if(result.hasErrors()) {
+			var auth = SecurityContextHolder.getContext().getAuthentication();
+			model.put("active", searchType.isEmpty() ? "All" : searchType.get().name());
+			model.put("list", service.search(auth.getName(), searchType, Optional.empty(), Optional.of(false)));
 			model.put("errors", true);
 			return "member/ledgers";
 		}
 		
-		if(id.isPresent()) {
+		if(id.filter(a -> a > 0).isPresent()) {
 			service.update(id.get(), form);
 		} else {
 			service.create(form);

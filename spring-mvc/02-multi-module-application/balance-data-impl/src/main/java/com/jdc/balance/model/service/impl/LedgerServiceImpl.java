@@ -46,7 +46,7 @@ public class LedgerServiceImpl implements LedgerService{
 			from ledger l left join transaction t on t.ledger_id = l.id 
 			left join transaction_item ti on ti.transaction_id = t.id """;
 	
-	private static final String GROUP_BY = "group by l.id, l.type, l.name, t.id) rs  group by rs.id, rs.type, rs.name";
+	private static final String GROUP_BY = "group by l.id, l.type, l.name, t.id) rs  group by rs.id, rs.type, rs.name order by rs.id";
 			
 	public LedgerServiceImpl(DataSource dataSource) {
 		template = new JdbcTemplate(dataSource);

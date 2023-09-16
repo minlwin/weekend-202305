@@ -12,7 +12,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" href="/styles/application.css" />
+
+<c:url value="/styles/application.css" var="appCss"></c:url>
+<link rel="stylesheet" href="${appCss}" />
 
 </head>
 <body>
@@ -57,8 +59,11 @@
 		
 		<!-- Buttons -->
 		<section class="main-controls mt-5">
-			<a href="/signup" class="btn btn-outline-primary"><i class="bi-person-plus"></i> Sign Up</a>
-			<a href="/signin" class="btn btn-outline-primary"><i class="bi-person-check"></i>Sign In</a>
+			<c:url value="/signup" var="signUp"></c:url>
+			<a href="${signUp}" class="btn btn-outline-primary"><i class="bi-person-plus"></i> Sign Up</a>
+
+			<c:url value="/signin" var="signIn"></c:url>
+			<a href="${signIn}" class="btn btn-outline-primary"><i class="bi-person-check"></i>Sign In</a>
 		</section>
 	
 	</app:anonymous-layout>

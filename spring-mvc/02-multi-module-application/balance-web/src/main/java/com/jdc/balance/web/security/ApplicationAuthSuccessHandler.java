@@ -16,7 +16,9 @@ public class ApplicationAuthSuccessHandler implements AuthenticationSuccessHandl
 			Authentication authentication) throws IOException, ServletException {
 
 		var role = authentication.getAuthorities().stream().map(a -> a.getAuthority()).findAny().get();
-		response.sendRedirect("/%s/home".formatted(role.toLowerCase()));
+		response.sendRedirect("%s/%s/home".formatted(
+				request.getContextPath(),
+				role.toLowerCase()));
 	}
 
 }
