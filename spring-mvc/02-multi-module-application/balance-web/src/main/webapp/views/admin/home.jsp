@@ -54,16 +54,6 @@
 			</div>
 						
 			<div class="col-auto">
-				<label class="form-label">Date From</label>
-				<input type="date" name="from" class="form-control" />
-			</div>
-
-			<div class="col-auto">
-				<label class="form-label">Date To</label>
-				<input type="date" name="to" class="form-control" />
-			</div>
-			
-			<div class="col-auto">
 				<label class="form-label">Name</label>
 				<input type="text" name="name" placeholder="Search Name" class="form-control" />
 			</div>
@@ -83,19 +73,19 @@
  					<th>Role</th>
  					<th>Register At</th>
  					<th>Email</th>
- 					<th>Phone</th>
  					<th>Status</th>
  				</tr>
  			</thead>
  			<tbody>
+ 				<c:forEach var="item" items="${list}">
  				<tr>
- 					<td>Aung Aung</td>
- 					<td>Member</td>
- 					<td>2023-06-01</td>
- 					<td>aung@gmail.com</td>
- 					<td>0923737448</td>
- 					<td>Active</td>
+ 					<td>${item.name()}</td>
+ 					<td>${item.role()}</td>
+ 					<td>${item.registAt()}</td>
+ 					<td>${item.email()}</td>
+ 					<td>${item.activated() ? 'Activated' : 'Not Yet'}</td>
  				</tr>
+ 				</c:forEach>
  			</tbody>
  		</table>
 		
