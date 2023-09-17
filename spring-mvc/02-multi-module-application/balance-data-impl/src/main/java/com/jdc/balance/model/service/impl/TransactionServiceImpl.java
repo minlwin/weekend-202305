@@ -15,7 +15,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.jdc.balance.model.PageResult;
 import com.jdc.balance.model.constants.LedgerType;
@@ -26,7 +25,9 @@ import com.jdc.balance.model.dto.TransactionItemDto;
 import com.jdc.balance.model.form.TransactionForm;
 import com.jdc.balance.model.service.AccountService;
 import com.jdc.balance.model.service.TransactionService;
+import com.jdc.balance.model.service.helper.BalanceSearchHelper;
 import com.jdc.balance.model.service.helper.TransactionFormHelper;
+import com.jdc.balance.model.service.helper.TransactionSearchHelper;
 
 @Service
 @Transactional(readOnly = true)
@@ -159,36 +160,8 @@ public class TransactionServiceImpl implements TransactionService{
 			Optional<LocalDate> from, 
 			Optional<LocalDate> to) {
 		
-		var sql = new StringBuffer(SELECT);
-		var params = new ArrayList<Object>();
-		
-		sql.append(" where a.email = ?");
-		params.add(username);
-		
-		if(null != type && type.isPresent()) {
-			sql.append(" and l.type = ?");
-			params.add(type.get().name());
-		}
-		
-		if(null != ledger && ledger.filter(StringUtils::hasLength).isPresent()) {
-			sql.append(" and lower(l.name) like ?");
-			params.add("%%%s%%".formatted(ledger.get().toLowerCase()));
-		}
-		
-		if(null != from && from.isPresent()) {
-			sql.append(" and t.issue_at >= ?");
-			params.add(Date.valueOf(from.get()));
-		}
-		
-		if(null != to && to.isPresent()) {
-			sql.append(" and t.issue_at <= ?");
-			params.add(Date.valueOf(to.get()));
-		}
-
-		sql.append(" ").append(GROUP_BY);
-		sql.append(" order by t.id desc");
-
-		return template.query(sql.toString(), transRowMapper, params.toArray());
+		var query = new TransactionSearchHelper(SELECT, GROUP_BY, username, type, ledger, from, to);
+		return template.query(query.sql(), transRowMapper, query.params());
 	}
 
 	@Override
@@ -196,26 +169,9 @@ public class TransactionServiceImpl implements TransactionService{
 			Optional<LocalDate> from, 
 			Optional<LocalDate> to) {
 		
-		var sql = new StringBuffer(SELECT);
-		var params = new ArrayList<Object>();
+		var query = new BalanceSearchHelper(SELECT, GROUP_BY, username, from, to);
 		
-		sql.append(" where a.email = ?");
-		params.add(username);
-
-		if(null != from && from.isPresent()) {
-			sql.append(" and t.issue_at >= ?");
-			params.add(Date.valueOf(from.get()));
-		}
-		
-		if(null != to && to.isPresent()) {
-			sql.append(" and t.issue_at <= ?");
-			params.add(Date.valueOf(to.get()));
-		}
-
-		sql.append(" ").append(GROUP_BY);
-		sql.append(" order by t.id");
-		
-		var transactions = template.query(sql.toString(), transRowMapper, params.toArray());
+		var transactions = template.query(query.sql(), transRowMapper, query.params());
 		var lastBalance = findLastBlance(username, from);
 		
 		var result = new ArrayList<BalanceDto>();

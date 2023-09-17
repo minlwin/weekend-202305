@@ -1,7 +1,6 @@
 package com.jdc.balance.model.service.impl;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +11,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.jdc.balance.model.PageResult;
 import com.jdc.balance.model.constants.Role;
@@ -20,6 +18,7 @@ import com.jdc.balance.model.dto.AccountDto;
 import com.jdc.balance.model.form.AccountForm;
 import com.jdc.balance.model.service.AccountService;
 import com.jdc.balance.model.service.helper.AccountFormHelper;
+import com.jdc.balance.model.service.helper.AccountSearchHelper;
 
 import lombok.val;
 
@@ -90,26 +89,8 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public List<AccountDto> search(Optional<Role> role, Optional<String> name, Optional<Boolean> deleted) {
-		
-		var sql = new StringBuffer("select * from account where 1 = 1");
-		var params = new ArrayList<Object>();
-		
-		if(null != role && role.isPresent()) {
-			sql.append(" and role = ?");
-			params.add(role.get().name());
-		}
-		
-		if(null != name && name.filter(StringUtils::hasLength).isPresent()) {
-			sql.append(" and lower(name) like ?");
-			params.add(name.get().toLowerCase().concat("%"));
-		}
-		
-		if(null != deleted && deleted.isPresent()) {
-			sql.append(" and deleted = ?");
-			params.add(deleted.get());
-		}
-		
-		return template.query(sql.toString(), rowMapper, params.toArray());
+		val query = new AccountSearchHelper("select * from account where 1 = 1", role, name, deleted);
+		return template.query(query.sql(), rowMapper, query.params());
 	}
 
 	private AccountDto findById(int id) {
@@ -125,8 +106,9 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public PageResult<AccountDto> search(Optional<Role> role, Optional<String> name, Optional<Boolean> deleted,
 			int current, int limit) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
+	
 
 }
