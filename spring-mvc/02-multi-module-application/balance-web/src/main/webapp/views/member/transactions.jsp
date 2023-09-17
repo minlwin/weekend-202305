@@ -79,7 +79,7 @@
 					<td class="text-end">${item.count()}</td>
 					<td class="text-end">${item.amount()}</td>
 					<td class="text-center">
-						<c:url value="/member/transaction/${pageTitle}/1" var="detailsLink" />
+						<c:url value="/member/transaction/${pageTitle}/${item.id()}" var="detailsLink" />
 						<a href="${detailsLink}" class="btn-link">
 							<i class="bi-send"></i>
 						</a>

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.jdc.balance.model.PageResult;
 import com.jdc.balance.model.constants.LedgerType;
 import com.jdc.balance.model.dto.BalanceDto;
 import com.jdc.balance.model.dto.TransactionDetailsDto;
@@ -242,5 +243,19 @@ public class TransactionServiceImpl implements TransactionService{
 
 	private long findLastBlance(String username, LedgerType type, LocalDate from) {
 		return template.queryForObject(LAST_BALANCE_SQL, Long.class, username, type.name(), Date.valueOf(from));
+	}
+
+	@Override
+	public PageResult<TransactionDto> search(String username, Optional<LedgerType> type, Optional<String> ledger,
+			Optional<LocalDate> from, Optional<LocalDate> to, int current, int limit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PageResult<BalanceDto> searchBalance(String username, Optional<LocalDate> from, Optional<LocalDate> to,
+			int current, int limit) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

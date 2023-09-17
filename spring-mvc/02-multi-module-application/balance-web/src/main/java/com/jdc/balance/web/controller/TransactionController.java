@@ -42,9 +42,10 @@ public class TransactionController {
 		return "member/transaction-details";
 	}
 		
-	@ModelAttribute("pageTitle")
-	String pageTitle(@PathVariable LedgerType type) {
-		return type.name();
+	@ModelAttribute
+	void pageTitle(@PathVariable LedgerType type, ModelMap model) {
+		model.put("pageTitle", type.name());
+		model.put("type", type);
 	}
 
 }

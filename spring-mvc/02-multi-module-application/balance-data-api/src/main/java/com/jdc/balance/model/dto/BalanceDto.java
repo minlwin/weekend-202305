@@ -9,6 +9,10 @@ public record BalanceDto(
 		long balance
 		) {
 	
+	public long getId() {
+		return transaction.id();
+	}
+	
 	public LocalDate getIssueAt() {
 		return transaction.issueAt();
 	}

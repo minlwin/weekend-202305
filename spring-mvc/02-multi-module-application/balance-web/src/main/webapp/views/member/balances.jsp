@@ -93,7 +93,8 @@
 					<td class="text-end">${item.debit}</td>
 					<td class="text-end">${item.balance()}</td>
 					<td class="text-center">
-						<a href="#" class="btn-link">
+						<c:url value="/member/transaction/${item.type}/${item.id}" var="detailsLink" />
+						<a href="${detailsLink}" class="btn-link">
 							<i class="bi-send"></i>
 						</a>
 					</td>

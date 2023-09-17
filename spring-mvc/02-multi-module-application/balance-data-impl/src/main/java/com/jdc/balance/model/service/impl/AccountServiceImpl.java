@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.jdc.balance.model.PageResult;
 import com.jdc.balance.model.constants.Role;
 import com.jdc.balance.model.dto.AccountDto;
 import com.jdc.balance.model.form.AccountForm;
@@ -119,6 +120,13 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public long getCount() {
 		return template.queryForObject("select count(id) from account", Long.class);
+	}
+
+	@Override
+	public PageResult<AccountDto> search(Optional<Role> role, Optional<String> name, Optional<Boolean> deleted,
+			int current, int limit) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
