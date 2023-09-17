@@ -1,6 +1,7 @@
 package com.jdc.balance.model.form;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,14 +19,22 @@ public class TransactionForm {
 	private Integer ledgerId;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@NotBlank(message = "Please enter issue date.")
+	@NotNull(message = "Please enter issue date.")
 	private LocalDate issueAt;
 	
 	@NotBlank(message = "Please enter remark.")
 	private String remark;
 	
 	@NotEmpty(message = "Please enter transaction items.")
-	private List<TransactionItemForm> items;
+	private List<TransactionItemForm> items = new ArrayList<>();
 
 	private boolean deleted;
+
+	public void addItem(TransactionItemForm itemForm) {
+		items.add(itemForm);
+	}
+	
+	public int getAllTotal() {
+		return items.stream().mapToInt(a -> a.getUnitPrice() * a.getQuantity()).sum();
+	}
 }

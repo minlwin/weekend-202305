@@ -11,6 +11,7 @@ public record TransactionDto(
 		String ledgerName,
 		LocalDate issueAt,
 		String remark,
+		long count,
 		long amount
 		) {
 

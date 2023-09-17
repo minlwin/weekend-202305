@@ -40,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService{
 	
 	private final String SELECT = """
 			select t.id, l.type, l.id ledgerId, l.name ledgerName, t.issue_at issueAt, t.remark, 
-			sum(ti.unit_price * ti.quantity) amount from transaction t 
+			count(t.id) `count`, sum(ti.unit_price * ti.quantity) amount from transaction t 
 			join ledger l on t.ledger_id = l.id 
 			join account a on t.account_id = a.id 
 			join transaction_item ti on t.id = ti.transaction_id""";
