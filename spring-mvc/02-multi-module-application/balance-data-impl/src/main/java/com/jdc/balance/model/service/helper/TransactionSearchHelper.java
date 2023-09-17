@@ -49,6 +49,11 @@ public class TransactionSearchHelper implements SearchHelper{
 		sb.append(" order by t.id");
 	}
 
+	public SearchHelper page(int page, int max) {
+		sb.append("skip %d limit %s".formatted((page - 1) * max, max));
+		return this;
+	}
+
 	@Override
 	public String sql() {
 		return sb.toString();

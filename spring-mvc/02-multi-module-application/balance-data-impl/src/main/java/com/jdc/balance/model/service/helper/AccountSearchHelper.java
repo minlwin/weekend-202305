@@ -31,6 +31,11 @@ public class AccountSearchHelper implements SearchHelper {
 		}
 	}
 
+	public SearchHelper page(int page, int max) {
+		sb.append("skip %d limit %s".formatted((page - 1) * max, max));
+		return this;
+	}
+
 	@Override
 	public String sql() {
 		return sb.toString();

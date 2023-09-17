@@ -106,8 +106,14 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public PageResult<AccountDto> search(Optional<Role> role, Optional<String> name, Optional<Boolean> deleted,
 			int current, int limit) {
+		val query = new AccountSearchHelper("select * from account where 1 = 1", role, name, deleted)
+				.page(current, limit);
 		
-		return null;
+		var list = template.query(query.sql(), rowMapper, query.params());
+		var countQuery = new AccountSearchHelper("select count(id) from account where 1 = 1", role, name, deleted);
+		var count = template.queryForObject(countQuery.sql(), Long.class, countQuery.params());
+		
+		return new PageResult<AccountDto>(list, current, limit, count);
 	}
 	
 
