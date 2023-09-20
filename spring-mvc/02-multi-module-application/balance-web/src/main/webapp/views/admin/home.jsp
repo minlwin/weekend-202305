@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>        
 <%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html>
@@ -28,7 +29,7 @@
 			
 			<ul class="navbar-nav">
 				<li class="nav-item">
-					<a href="/" class="nav-link">
+					<a id="signOutMenu" class="nav-link">
 						<i class="bi-lock"></i> Sign Out
 					</a>
 				</li>
@@ -41,30 +42,20 @@
 		<h3><i class="bi-people"></i> Member Management</h3>
 	
 		<!-- Search Form -->
-		<form action="${searchAction}" class="row my-3">
+		<form class="row my-3">
 		
 			<div class="col-auto">
 				<label class="form-label">Role</label>
 				<select name="role" class="form-select">
 					<option value="">All Role</option>
-					<option value="Member">Member</option>
-					<option value="Admin">Admin</option>
+					<option value="Member" ${param.role eq 'Member' ? 'selected' : ''}>Member</option>
+					<option value="Admin" ${param.role eq 'Admin' ? 'selected' : ''}>Admin</option>
 				</select>
 			</div>
 						
 			<div class="col-auto">
-				<label class="form-label">Date From</label>
-				<input type="date" name="from" class="form-control" />
-			</div>
-
-			<div class="col-auto">
-				<label class="form-label">Date To</label>
-				<input type="date" name="to" class="form-control" />
-			</div>
-			
-			<div class="col-auto">
 				<label class="form-label">Name</label>
-				<input type="text" name="name" placeholder="Search Name" class="form-control" />
+				<input type="text" name="name" placeholder="Search Name" value="${param.name}" class="form-control" />
 			</div>
 			
 			<div class="col btn-wrapper">
@@ -82,19 +73,19 @@
  					<th>Role</th>
  					<th>Register At</th>
  					<th>Email</th>
- 					<th>Phone</th>
  					<th>Status</th>
  				</tr>
  			</thead>
  			<tbody>
+ 				<c:forEach var="item" items="${list}">
  				<tr>
- 					<td>Aung Aung</td>
- 					<td>Member</td>
- 					<td>2023-06-01</td>
- 					<td>aung@gmail.com</td>
- 					<td>0923737448</td>
- 					<td>Active</td>
+ 					<td>${item.name()}</td>
+ 					<td>${item.role()}</td>
+ 					<td>${item.registAt()}</td>
+ 					<td>${item.email()}</td>
+ 					<td>${item.activated() ? 'Activated' : 'Not Yet'}</td>
  				</tr>
+ 				</c:forEach>
  			</tbody>
  		</table>
 		
@@ -102,6 +93,13 @@
 		<app:pagination></app:pagination>
 	
 	</div>
+	
+	<c:url value="/signout" var="signOutAction"></c:url>
+	<sf:form cssClass="d-none" id="signOutForm" action="${signOutAction}" method="post">
+	</sf:form>
+	
+	<c:url value="/js/signout.js" var="script"></c:url>
+	<script type="text/javascript" src="${script}"></script>
 
 </body>
 </html>

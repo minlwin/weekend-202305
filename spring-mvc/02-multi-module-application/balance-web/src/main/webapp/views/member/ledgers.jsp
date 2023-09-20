@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>        
 <%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +39,7 @@
 				<c:url value="/member/ledger" var="creditLink">
 					<c:param name="type" value="Credit"></c:param>
 				</c:url>
-				<a href="${creditLink}" class="btn ${ param.type eq 'Credit' ? 'btn-dark' : 'btn-outline-dark' }">
+				<a href="${creditLink}" class="btn ${ active eq 'Credit' ? 'btn-dark' : 'btn-outline-dark' }">
 					<i class="bi bi-arrow-up"></i> Credit
 				</a>
 				
@@ -46,59 +47,71 @@
 				<c:url value="/member/ledger" var="debitLink">
 					<c:param name="type" value="Debit"></c:param>
 				</c:url>
-				<a href="${debitLink}" class="btn ${ param.type eq 'Debit' ? 'btn-dark' : 'btn-outline-dark' }">
+				<a href="${debitLink}" class="btn ${ active eq 'Debit' ? 'btn-dark' : 'btn-outline-dark' }">
 					<i class="bi bi-arrow-down"></i> Debit
 				</a>
 				
 				<!-- All Ledgers -->
 				<c:url value="/member/ledger" var="allLedgers"></c:url>
-				<a href="${allLedgers}" class="btn ${ null eq param.type ? 'btn-dark' : 'btn-outline-dark' }">
+				<a href="${allLedgers}" class="btn ${ active eq 'All' ? 'btn-dark' : 'btn-outline-dark' }">
 					<i class="bi bi-arrow-down-up"></i> All Ledgers
 				</a>
 			
 			</div>
 		</h3>
 		
-		
 		<!-- Data Table -->
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Id</th>
-					<th>Type</th>
-					<th>Ledger Name</th>
-					<th>Status</th>
-					<th class="text-end">Month Total</th>
-					<th class="text-end">Year Total</th>
-					<th></th>
-				</tr>
-			</thead>
+		<c:choose>
+			<c:when test="${not empty list}">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Type</th>
+						<th>Ledger Name</th>
+						<th class="text-end">Transactions</th>
+						<th class="text-end">Amount</th>
+						<th></th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<c:forEach var="item" items="${list}">
+					<tr>
+						<td>${item.id()}</td>
+						<td>${item.type()}</td>
+						<td>${item.name()}</td>
+						<td class="text-end">${item.transactionCount()}</td>
+						<td class="text-end">${item.transactionAmount()}</td>
+						<td class="text-center">
+							<a href="#" data-id="${item.id()}" data-name="${item.name()}" data-type="${item.type()}" class="btn-link editBtn">
+								<i class="bi-pencil"></i>
+							</a>
+						</td>
+					</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			</c:when>
 			
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>Credit</td>
-					<td>Service Charge</td>
-					<th>Active</th>
-					<td class="text-end">35,000</td>
-					<td class="text-end">5,500,000</td>
-					<td class="text-center">
-						<a href="#" class="btn-link">
-							<i class="bi-pencil"></i>
-						</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+			<c:otherwise>
+				<div class="alert alert-info">There is no category.</div>
+			</c:otherwise>
+		</c:choose>
+
 	
 	</div>
 	
 	<!-- Edit Dialog -->
-	<div class="modal fade" id="editLedgerDialog" tabindex="-1">
+	<div class="modal" id="editLedgerDialog" data-error="${errors}" tabindex="-1">
 		<c:url value="/member/ledger" var="saveAction"></c:url>
-		<sf:form method="post" modelAttribute="form" action="${saveAction}" class="modal-dialog">
+		<sf:form method="post" id="ledgerEditForm" modelAttribute="form" action="${saveAction}" class="modal-dialog">
 		
-			<sf:input type="hidden" path="id" />
+			<sec:authentication var="username" property="name" />
+			<input type="hidden" name="username" value="${username}" />
+			
+			<input type="hidden" id="ledgerId" name="id" />
+			<input type="hidden" name="searchType" value="${param.type}" />
 			
 			<div class="modal-content">
 				<div class="modal-header">
@@ -109,17 +122,19 @@
 					<!-- Type Select -->
 					<div class="mb-3">
 						<label class="form-label">Ledger Type</label>
-						<sf:select path="type" cssClass="form-select">
+						<sf:select id="ledgerType" path="type" cssClass="form-select">
 							<option value="">Select One</option>
-							<option value="Credit">Credit</option>
-							<option value="Debit">Debit</option>
+							<option value="Credit" ${param.type eq 'Credit' ? 'selected' : ''}>Credit</option>
+							<option value="Debit" ${param.type eq 'Debit' ? 'selected' : ''}>Debit</option>
 						</sf:select>
+						<sf:errors path="type" cssClass="text-secondary"></sf:errors>
 					</div>
 					
 					<!-- Name Input -->
 					<div class="mb-3">
 						<label class="form-label">Ledger Name</label>
-						<sf:input path="name" placeholder="Enter Ledger Name" cssClass="form-control" />
+						<sf:input id="ledgerName" path="name" placeholder="Enter Ledger Name" cssClass="form-control" />
+						<sf:errors path="name" cssClass="text-secondary"></sf:errors>
 					</div>
 					
 					<!-- Status Check Box -->

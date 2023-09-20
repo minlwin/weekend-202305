@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -23,6 +24,7 @@ import com.jdc.balance.model.service.LedgerService;
 import com.jdc.balance.model.service.helper.LedgerFormHelper;
 
 @Service
+@Transactional(readOnly = true)
 public class LedgerServiceImpl implements LedgerService{
 	
 	@Autowired
@@ -39,11 +41,12 @@ public class LedgerServiceImpl implements LedgerService{
 					rs.getLong("tx_amount"));
 			
 	private static final String SELECT = """
-			select l.id, l.type, l.name, count(t.id) tx_count, sum(ti.qantity * ti.unit_price) tx_amount 
-			from ledger l join transaction t on t.ledger_id = l.id 
-			join transaction_item ti on ti.transaction_id = t.id""";
+			select rs.id, rs.type, rs.name, count(rs.tx_id) tx_count, sum(tx_amount) tx_amount 
+			from(select l.id, l.type, l.name, t.id tx_id, sum(ti.quantity * ti.unit_price) tx_amount 
+			from ledger l left join transaction t on t.ledger_id = l.id 
+			left join transaction_item ti on ti.transaction_id = t.id """;
 	
-	private static final String GROUP_BY = " group by l.id, l.type, l.name";
+	private static final String GROUP_BY = "group by l.id, l.type, l.name, t.id) rs  group by rs.id, rs.type, rs.name order by rs.id";
 			
 	public LedgerServiceImpl(DataSource dataSource) {
 		template = new JdbcTemplate(dataSource);
@@ -57,7 +60,7 @@ public class LedgerServiceImpl implements LedgerService{
 	public LedgerDto create(LedgerForm form) {
 		var id = insert.executeAndReturnKey(LedgerFormHelper.insertParams(form, 
 				username -> accountService.findByEmail(username)
-					.orElseThrow(() -> new IllegalArgumentException("There is no account to create ledger."))))
+					.orElseThrow(() -> new DataIntegrityViolationException("There is no account to create ledger."))))
 				.intValue();
 		return findById(id).orElseThrow();
 	}
@@ -66,7 +69,7 @@ public class LedgerServiceImpl implements LedgerService{
 	@Transactional
 	public LedgerDto update(int id, LedgerForm form) {
 		
-		var sql = "update ledger name = ?, type = ?, deleted = ? where id = ?";
+		var sql = "update ledger set name = ?, type = ?, deleted = ? where id = ?";
 		
 		template.update(sql, stmt -> {
 			stmt.setString(1, form.getName());
@@ -80,12 +83,12 @@ public class LedgerServiceImpl implements LedgerService{
 
 	@Override
 	public Optional<LedgerDto> findById(int id) {
-		var sql = "%s where id = ? %s".formatted(SELECT, GROUP_BY);
+		var sql = "%s where l.id = ? %s".formatted(SELECT, GROUP_BY);
 		return template.queryForStream(sql, rowMapper, id).findAny();
 	}
 
 	@Override
-	public List<LedgerDto> search(String username, Optional<LedgerType> type, Optional<String> name) {
+	public List<LedgerDto> search(String username, Optional<LedgerType> type, Optional<String> name, Optional<Boolean> deleted) {
 		
 		var sql = new StringBuffer(SELECT);
 		var params = new ArrayList<Object>();
@@ -95,17 +98,22 @@ public class LedgerServiceImpl implements LedgerService{
 		sql.append(" where l.account_id = ?");
 		params.add(account.id());
 		
-		if(type.isPresent()) {
+		if(null != type && type.isPresent()) {
 			sql.append(" and l.type = ?");
 			params.add(type.get().name());
 		}
 		
-		if(name.filter(StringUtils::hasLength).isPresent()) {
+		if(null != name && name.filter(StringUtils::hasLength).isPresent()) {
 			sql.append(" and lower(l.name) like ?");
 			params.add(name.get().toLowerCase().concat("%"));
 		}
 		
-		sql.append(GROUP_BY);
+		if(null != deleted && deleted.isPresent()) {
+			sql.append(" and l.deleted = ?");
+			params.add(deleted.get());
+		}
+		
+		sql.append(" ").append(GROUP_BY);
 		
 		return template.query(sql.toString(), rowMapper, params.toArray());
 	}

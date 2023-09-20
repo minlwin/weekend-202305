@@ -1,0 +1,6 @@
+thaung@gmail.com	1	Thaung Htike	Admin	2023-09-01	TRUE	FALSE
+thawdar@gmail.com	2	Thawdar	Admin	2023-09-02	FALSE	FALSE
+thidar@gmail.com	3	Thidar	Member	2023-09-03	TRUE	FALSE
+nilar@gmail.com	4	Nilar	Member	2023-09-04	FALSE	FALSE
+koko@gmail.com	5	Ko Ko	Member	2023-09-05	TRUE	FALSE
+nyinyi@gmail.com	6	Nyi Nyi	Member	2023-09-06	FALSE	FALSE

@@ -83,20 +83,23 @@
 			</thead>
 			
 			<tbody>
+				<c:forEach var="item" items="${list}">
 				<tr>
-					<td>2023-10-10</td>
-					<td>Credit</td>
-					<td>Some Ledger 1</td>
-					<td>Some Other Remark</td>
-					<td class="text-end">12,000</td>
-					<td class="text-end">0</td>
-					<td class="text-end">1,234,500</td>
+					<td>${item.issueAt}</td>
+					<td>${item.type}</td>
+					<td>${item.ledgerName}</td>
+					<td>${item.remark}</td>
+					<td class="text-end">${item.credit}</td>
+					<td class="text-end">${item.debit}</td>
+					<td class="text-end">${item.balance()}</td>
 					<td class="text-center">
-						<a href="#" class="btn-link">
+						<c:url value="/member/transaction/${item.type}/${item.id}" var="detailsLink" />
+						<a href="${detailsLink}" class="btn-link">
 							<i class="bi-send"></i>
 						</a>
 					</td>
 				</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 		

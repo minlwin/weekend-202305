@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		})
 	}
 	
+	if(editLedgerDialog.dataset.error) {
+		const dialog = new bootstrap.Modal(editLedgerDialog)
+		dialog.show()
+	}
+	
 	const statusCheck = document.getElementById('statusCheck')
 	const statusCheckLabel = document.getElementById('statusCheckLabel')
 	
@@ -17,4 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			statusCheckLabel.innerText = event.target.checked ? 'Deleted' : 'Active'
 		})
 	}
+	
+	const editButtons = Array.from(document.getElementsByClassName('editBtn'))
+	editButtons.forEach(btn => btn.addEventListener('click', () => {
+		document.getElementById('ledgerId').value = btn.dataset.id
+		document.getElementById('ledgerName').value = btn.dataset.name
+		document.getElementById('ledgerType').value = btn.dataset.type
+		
+		const dialog = new bootstrap.Modal(editLedgerDialog)
+		dialog.show()
+	}))
 })

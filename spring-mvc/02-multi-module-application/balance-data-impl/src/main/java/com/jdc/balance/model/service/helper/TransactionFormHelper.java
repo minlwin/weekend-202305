@@ -19,7 +19,7 @@ public class TransactionFormHelper {
 		var account = accountConverter.apply(form.getUsername());
 		params.put("account_id", account.id());
 		params.put("ledger_id", form.getLedgerId());
-		params.put("issue_at", Date.valueOf(form.getIssueAt()));
+		params.put("issue_at", form.getIssueAt() == null ? null : Date.valueOf(form.getIssueAt()));
 		params.put("remark", form.getRemark());
 		params.put("deleted", form.isDeleted());
 		return params;

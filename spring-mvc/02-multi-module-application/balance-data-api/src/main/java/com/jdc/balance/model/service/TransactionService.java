@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.jdc.balance.model.PageResult;
 import com.jdc.balance.model.constants.LedgerType;
 import com.jdc.balance.model.dto.BalanceDto;
 import com.jdc.balance.model.dto.TransactionDetailsDto;
@@ -24,9 +25,22 @@ public interface TransactionService {
 			Optional<String> ledger,
 			Optional<LocalDate> from,
 			Optional<LocalDate> to);
+
+	PageResult<TransactionDto> search(
+			String username, 
+			Optional<LedgerType> type, 
+			Optional<String> ledger,
+			Optional<LocalDate> from,
+			Optional<LocalDate> to,
+			int current, int limit);
 	
 	List<BalanceDto> searchBalance(
 			String username, 
 			Optional<LocalDate> from,
 			Optional<LocalDate> to);
+	
+	PageResult<BalanceDto> searchBalance(
+			String username, 
+			Optional<LocalDate> from,
+			Optional<LocalDate> to, int current, int limit);	
 }

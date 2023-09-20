@@ -8,6 +8,7 @@ public record AccountDto(
 		int id,
 		String name, 
 		String email,
+		String password,
 		Role role,
 		LocalDate registAt,
 		boolean activated,

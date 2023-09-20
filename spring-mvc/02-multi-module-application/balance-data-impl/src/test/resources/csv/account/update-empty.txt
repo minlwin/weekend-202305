@@ -1,0 +1,4 @@
+1		thaung1@gmail.com	Admin	Password	2023-09-10	TRUE	FALSE
+2	Thawdar		Admin	Password	2023-09-10	TRUE	TRUE
+3	Thidar	thidar3@gmail.com		Password	2023-09-10	TRUE	FALSE
+3	Nilar	nilar@gmail.com	Admin		2023-09-10	TRUE	FALSE

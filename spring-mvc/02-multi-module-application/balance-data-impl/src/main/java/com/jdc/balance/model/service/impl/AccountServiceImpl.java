@@ -1,6 +1,6 @@
 package com.jdc.balance.model.service.impl;
 
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,17 +11,19 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
+import com.jdc.balance.model.PageResult;
 import com.jdc.balance.model.constants.Role;
 import com.jdc.balance.model.dto.AccountDto;
 import com.jdc.balance.model.form.AccountForm;
 import com.jdc.balance.model.service.AccountService;
 import com.jdc.balance.model.service.helper.AccountFormHelper;
+import com.jdc.balance.model.service.helper.AccountSearchHelper;
 
 import lombok.val;
 
 @Service
+@Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService{
 	
 	private SimpleJdbcInsert insert;
@@ -31,6 +33,7 @@ public class AccountServiceImpl implements AccountService{
 			rs.getInt("id"), 
 			rs.getString("name"), 
 			rs.getString("email"), 
+			rs.getString("password"),
 			Role.valueOf(rs.getString("role")), 
 			rs.getDate("regist_at").toLocalDate(), 
 			rs.getBoolean("activated"), 
@@ -46,7 +49,7 @@ public class AccountServiceImpl implements AccountService{
 				"email", 
 				"password", 
 				"role", 
-				"regist_ad", 
+				"regist_at", 
 				"activated", 
 				"deleted"));
 	}
@@ -62,16 +65,17 @@ public class AccountServiceImpl implements AccountService{
 	@Transactional
 	public AccountDto update(int id, AccountForm form) {
 		var sql = """
-			update account set name = ?, email = ?, role = ?, 
+			update account set name = ?, email = ?, role = ?, regist_at = ?, 
 			activated = ?, deleted = ? where id = ?""";
 		
 		template.update(sql, stmt -> {
 			stmt.setString(1, form.getName());
 			stmt.setString(2, form.getEmail());
-			stmt.setString(3, form.getRole().name());
-			stmt.setBoolean(4, form.isActivated());
-			stmt.setBoolean(5, form.isDeleted());
-			stmt.setInt(6, id);
+			stmt.setString(3, null != form.getRole() ? form.getRole().name() : null);
+			stmt.setDate(4, form.getRegistAt() == null ? null : Date.valueOf(form.getRegistAt()));
+			stmt.setBoolean(5, form.isActivated());
+			stmt.setBoolean(6, form.isDeleted());
+			stmt.setInt(7, id);
 		});
 		
 		return findById(id);
@@ -85,31 +89,32 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public List<AccountDto> search(Optional<Role> role, Optional<String> name, Optional<Boolean> deleted) {
-		
-		var sql = new StringBuffer("select * from account where 1 = 1");
-		var params = new ArrayList<Object>();
-		
-		if(role.isPresent()) {
-			sql.append(" and role = ?");
-			params.add(role.get().name());
-		}
-		
-		if(name.filter(StringUtils::hasLength).isPresent()) {
-			sql.append(" and lower(name) like ?");
-			params.add(name.get().toLowerCase().concat("%"));
-		}
-		
-		if(deleted.isPresent()) {
-			sql.append(" and deleted = ?");
-			params.add(deleted.get());
-		}
-		
-		return template.query(sql.toString(), rowMapper, params.toArray());
+		val query = new AccountSearchHelper("select * from account where 1 = 1", role, name, deleted);
+		return template.query(query.sql(), rowMapper, query.params());
 	}
 
 	private AccountDto findById(int id) {
 		val sql = "select * from account where id = ?";
 		return template.queryForStream(sql, rowMapper, id).findAny().get();
 	}
+
+	@Override
+	public long getCount() {
+		return template.queryForObject("select count(id) from account", Long.class);
+	}
+
+	@Override
+	public PageResult<AccountDto> search(Optional<Role> role, Optional<String> name, Optional<Boolean> deleted,
+			int current, int limit) {
+		val query = new AccountSearchHelper("select * from account where 1 = 1", role, name, deleted)
+				.page(current, limit);
+		
+		var list = template.query(query.sql(), rowMapper, query.params());
+		var countQuery = new AccountSearchHelper("select count(id) from account where 1 = 1", role, name, deleted);
+		var count = template.queryForObject(countQuery.sql(), Long.class, countQuery.params());
+		
+		return new PageResult<AccountDto>(list, current, limit, count);
+	}
+	
 
 }

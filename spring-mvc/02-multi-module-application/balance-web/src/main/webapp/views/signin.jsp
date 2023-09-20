@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %> 
-<%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>       
+<%@ taglib prefix="app" tagdir="/WEB-INF/tags" %>   
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="stylesheet" href="/styles/application.css" />
+
+<c:url value="/styles/application.css" var="appCss"></c:url>
+<link rel="stylesheet" href="${appCss}" />
 
 </head>
 <body>
@@ -27,17 +30,18 @@
 				<i class="bi-unlock"></i>
 			</div>
 		
-			<form action="/member/home" class="sign-form">
+			<c:url var="signInAction" value="/signin"></c:url>
+			<sf:form action="${signInAction}" method="post" cssClass="sign-form">
 				<!-- Email -->
 				<div class="mb-3">
 					<label class="form-label">Email Address</label>
-					<input type="email" placeholder="Enter Email for Login" class="form-control" />
+					<input name="username" type="email" placeholder="Enter Email for Login" class="form-control" />
 				</div>
 				
 				<!-- Password -->
 				<div class="mb-3">
 					<label class="form-label">Password</label>
-					<input type="password" placeholder="Enter Password" class="form-control" />
+					<input name="password" type="password" placeholder="Enter Password" class="form-control" />
 				</div>
 				
 				<div>
@@ -47,11 +51,12 @@
 					</button>
 					
 					<!-- Sign Up Link -->
-					<a href="/signup" class="btn btn-outline-primary">
+					<c:url value="/signup" var="signUp"></c:url>
+					<a href="${signUp}" class="btn btn-outline-primary">
 						<i class="bi bi-person-plus"></i> Sign Up
 					</a>
 				</div>
-			</form>
+			</sf:form>
 		</div>
 	
 	</app:anonymous-layout>

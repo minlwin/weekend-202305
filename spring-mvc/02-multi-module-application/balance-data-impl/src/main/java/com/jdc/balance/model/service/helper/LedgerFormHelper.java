@@ -15,7 +15,7 @@ public class LedgerFormHelper {
 		var params = new HashMap<String, Object>();
 		params.put("account_id", account.id());
 		params.put("name", form.getName());
-		params.put("type", form.getType().name());
+		params.put("type", form.getType() == null ? null : form.getType().name());
 		params.put("deleted", form.isDeleted());
 		return params;
 	}
