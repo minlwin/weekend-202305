@@ -21,7 +21,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
 import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
-@PropertySource("classpath:/connection.properties")
+@PropertySource("/connection.properties")
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.jdc.mkt.model.service")
 @EnableJpaRepositories(basePackages = "com.jdc.mkt.model.repo")

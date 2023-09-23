@@ -2,6 +2,7 @@ package com.jdc.mkt.entity;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -22,10 +23,10 @@ public class SaleDetails implements Serializable {
 	@EmbeddedId
 	private SaleDetailsPk id;
 	private int qty;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@MapsId("productId")
 	private Product product;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@MapsId("salesId")
 	private Sales sales;
 	private int total;

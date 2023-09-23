@@ -1,11 +1,13 @@
 package com.jdc.mkt.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,8 +36,8 @@ public class Product implements Serializable {
 	private int wholeSalePrice;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Category category;
-	@OneToMany(mappedBy = "product")
-	private List<SaleDetails> saleDetails;
+	@OneToMany(mappedBy = "product",orphanRemoval = true)
+	private List<SaleDetails> saleDetails = new ArrayList<SaleDetails>();
 
 	public Product(String name, int detailPrice, int wholeSalePrice, Category category) {
 		super();
