@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,22 +22,23 @@ import com.jolbox.bonecp.BoneCPDataSource;
 import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
-@PropertySource("/connection.properties")
+//@PropertySource("classpath:/connection.properties")
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.jdc.mkt.model.service")
 @EnableJpaRepositories(basePackages = "com.jdc.mkt.model.repo")
 public class ApplicationConfig {
+	
 
 	@Bean
-	DataSource dataSource(@Value("${db.url}") String url,@Value("${db.user}") String user,@Value("${db.password}") String password) {
+	DataSource dataSource() {
 		var ds = new BoneCPDataSource();
-		ds.setJdbcUrl(url);
-		ds.setUser(user);
-		ds.setPassword(password);
+		ds.setJdbcUrl("jdbc:mysql://localhost:3306/product_db");
+		ds.setUser("root");
+		ds.setPassword("admin");
 		return ds;
 	}
 	@Bean
-	LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource ds) throws IOException {
+	FactoryBean<EntityManagerFactory> entityManagerFactory(DataSource ds) throws IOException {
 		var emf = new LocalContainerEntityManagerFactoryBean();
 		emf.setDataSource(ds);
 		emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
