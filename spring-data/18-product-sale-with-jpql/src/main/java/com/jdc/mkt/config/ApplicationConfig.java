@@ -22,7 +22,7 @@ import com.jolbox.bonecp.BoneCPDataSource;
 import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
-//@PropertySource("classpath:/connection.properties")
+@PropertySource("classpath:/connection.properties")
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.jdc.mkt.model.service")
 @EnableJpaRepositories(basePackages = "com.jdc.mkt.model.repo")
@@ -30,11 +30,11 @@ public class ApplicationConfig {
 	
 
 	@Bean
-	DataSource dataSource() {
+	DataSource dataSource(@Value("${db.url}")String url,@Value("${db.user}")String user,@Value("${db.password}")String pass) {
 		var ds = new BoneCPDataSource();
-		ds.setJdbcUrl("jdbc:mysql://localhost:3306/product_db");
-		ds.setUser("root");
-		ds.setPassword("admin");
+		ds.setJdbcUrl(url);
+		ds.setUser(user);
+		ds.setPassword(pass);
 		return ds;
 	}
 	@Bean
