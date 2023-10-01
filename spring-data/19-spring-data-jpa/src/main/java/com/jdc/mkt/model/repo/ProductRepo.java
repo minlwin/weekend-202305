@@ -37,6 +37,8 @@ public interface ProductRepo extends JpaRepository<Product, Integer> {
 	@Query(nativeQuery = true,value = "update product set name = ? ,dt_price = ? where id = ?")
 	void updateProductNameAndDtPrice(String name,int price,int id);
 	
+	
+	
 }
 
 

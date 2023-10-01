@@ -42,13 +42,13 @@ public class Product implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(nullable = false,columnDefinition = "varchar(30) not null check(char_length(name)>= 4)")
 	private String name;
 	@Column(name = "dt_price")
-	private int detailPrice;
+	private Integer detailPrice;
 	@Column(name = "ws_price")
-	private int wholeSalePrice;
+	private Integer wholeSalePrice;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Category category;
 	@OneToMany(mappedBy = "product",orphanRemoval = true)
