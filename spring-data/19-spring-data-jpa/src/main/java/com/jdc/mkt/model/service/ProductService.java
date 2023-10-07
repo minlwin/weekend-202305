@@ -49,4 +49,15 @@ public class ProductService {
 		return query.getResultList();
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

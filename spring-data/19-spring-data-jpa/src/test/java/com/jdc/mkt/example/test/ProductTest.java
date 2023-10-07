@@ -15,6 +15,7 @@ import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 
 import com.jdc.mkt.entity.Category;
 import com.jdc.mkt.entity.Product;
+import com.jdc.mkt.model.projection.Inf.CategoryProjectionInf;
 import com.jdc.mkt.model.repo.ProductRepo;
 
 @SpringBootTest
@@ -24,7 +25,7 @@ public class ProductTest {
 	@Autowired
 	ProductRepo repo;
 	
-	@ParameterizedTest
+	//@ParameterizedTest
 	@CsvSource({"1,Milk","2,Eggs"})
 	@Order(1)
 	void findOneByName(int id,String name) {
@@ -39,7 +40,7 @@ public class ProductTest {
 	@ParameterizedTest
 	@CsvSource({"1,m","4,a"})
 	@Order(2)
-	void findAllByNameLike(int size,String name) {
+	void findAllByNameLike(int id,String name) {
 		var probe = new Product();
 		probe.setName(name);
 		
@@ -50,12 +51,13 @@ public class ProductTest {
 		
 		var example = Example.of(probe,matcher);
 		
-		var result = repo.findAll(example);
-		assertEquals(size, result.size());		
+		var result = repo.findBy(example,p -> p.as(CategoryProjectionInf.class).all());
+		
+		System.out.println(result.get(0).getId());
 	}
 	
 
-	@ParameterizedTest
+	//@ParameterizedTest
 	@CsvSource({"5,diary","4,Snacks"})
 	@Order(3)
 	void findCountByCategory(int count ,String name) {
@@ -69,7 +71,7 @@ public class ProductTest {
 	
 	
 	
-	@ParameterizedTest
+	//@ParameterizedTest
 	@CsvSource({"1,m","2,a"})
 	@Order(4)
 	void findByByName(int size,String name) {

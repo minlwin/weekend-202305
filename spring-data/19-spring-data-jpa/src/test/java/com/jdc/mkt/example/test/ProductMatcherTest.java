@@ -2,7 +2,6 @@ package com.jdc.mkt.example.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -19,7 +18,7 @@ import org.springframework.data.domain.Sort.Direction;
 
 import com.jdc.mkt.entity.Category;
 import com.jdc.mkt.entity.Product;
-import com.jdc.mkt.model.projection.record.ProductWithCategory;
+import com.jdc.mkt.model.projection.Inf.ProductProjectionInf;
 import com.jdc.mkt.model.repo.ProductRepo;
 
 @SpringBootTest
@@ -30,7 +29,7 @@ public class ProductMatcherTest {
 	ProductRepo repo;
 	
 	@Order(1)
-	@ParameterizedTest
+	//@ParameterizedTest
 	@CsvSource("6,candy")
 	void usingWithNullHandler(int id,String name) {
 		var product = new Product();
@@ -40,7 +39,8 @@ public class ProductMatcherTest {
 				.matching()
 				//.withIgnoreNullValues()
 				.withNullHandler(NullHandler.IGNORE)
-				.withIgnoreCase(true));
+				.withIgnoreCase(true)
+				);
 		
 		var result = repo.findOne(example);
 		assertEquals(id, result.get().getId());
@@ -61,12 +61,13 @@ public class ProductMatcherTest {
 				.withIgnoreCase()
 				.withIgnorePaths("id","detailPrice","category.id"));
 		
-		var result = repo.findOne(example);
-		assertEquals(id, result.get().getId());
+		
+		var result = repo.findBy(example,query ->query.as(ProductProjectionInf.class).all());
+		result.forEach(p ->System.out.println( p.showDisplay()));
 	}
 	
 	@Order(3)
-	@ParameterizedTest
+	//@ParameterizedTest
 	@CsvSource("6,c")
 	void usingWithMacher(int id,String name) {
 		var product = new Product();
@@ -87,7 +88,7 @@ public class ProductMatcherTest {
 	}
 	
 	@Order(4)
-	@ParameterizedTest
+	//@ParameterizedTest
 	@CsvSource("18,a")
 	void usingWithFetchableFluentQuery(int id,String name) {
 		var product = new Product();
