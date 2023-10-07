@@ -7,9 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 
 import com.jdc.mkt.entity.Product;
-import com.jdc.mkt.model.repo.BaseRepositoryInt;
 
-public interface ProductRepositoryInt extends JpaRepository<Product, Integer>,BaseRepositoryInt{
+public interface ProductDynamicSearchRepositoryInt extends JpaRepository<Product, Integer>{
 
 	
 	@Query("select p from Product p where p.name like ?1")

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ public class Category implements Serializable {
 	private String name;
 	@Column(columnDefinition = "tinyint(1) default '0'")
 	private Boolean isDeleted;
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category",cascade = {CascadeType.REMOVE,CascadeType.MERGE,CascadeType.PERSIST}, orphanRemoval = true)
 	private List<Product> products = new ArrayList<Product>() ;
 	
 	public Category(String name) {
@@ -38,6 +39,11 @@ public class Category implements Serializable {
 	public void addProduct(Product product) {
 		product.setCategory(this);
 		this.products.add(product);
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 	
 }
