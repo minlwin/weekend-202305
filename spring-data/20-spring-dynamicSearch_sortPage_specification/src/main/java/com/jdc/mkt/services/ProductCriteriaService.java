@@ -75,15 +75,14 @@ public class ProductCriteriaService {
 	/* select p.category.name name,count(*) from Product p where
 	 * p.category.name = :cname
 	 * group by name
-	 * ordery by name */
-	/*
-	 * public List<Product> getProductCountByCategoryName(String name){
-	 * Specification<Product> spec = (root,query,cb) -> {
-	 * 
-	 * 
-	 * 
-	 * }; }
-	 */
+	 * ordery by name
+	 *  */
+	
+//	public List<Product> getProductCountByCategoryName(String name){
+//		  Specification<Product> spec = (root,query,cb) -> {
+//			  query.groupBy(root);
+//		  };
+//	}
 	
 	public List<Product> search(String pname,String cname,Integer price){
 		List<Specification<Product>> list = new ArrayList<Specification<Product>>();

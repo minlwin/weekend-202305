@@ -14,13 +14,13 @@ import org.springframework.util.StringUtils;
 
 import com.jdc.mkt.entity.Category;
 import com.jdc.mkt.entity.Product;
-import com.jdc.mkt.model.repo.custom.ProductDynamicSearchRepositoryInt;
+import com.jdc.mkt.model.repo.non_null.ProductNonNullRepo;
 
 @SpringBootTest
 public class ProductExampleDynamicSearchTest {
 
 	@Autowired
-	ProductDynamicSearchRepositoryInt repo;
+	ProductNonNullRepo repo;
 	
 	@Test
 	void findByNamelike() {

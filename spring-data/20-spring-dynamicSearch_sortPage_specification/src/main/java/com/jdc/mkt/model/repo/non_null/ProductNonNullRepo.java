@@ -1,4 +1,4 @@
-package com.jdc.mkt.model.repo.custom;
+package com.jdc.mkt.model.repo.non_null;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.lang.NonNull;
 
 import com.jdc.mkt.entity.Product;
 
-public interface ProductDynamicSearchRepositoryInt extends JpaRepository<Product, Integer>{
+public interface ProductNonNullRepo extends JpaRepository<Product, Integer>{
 
 	
 	@Query("select p from Product p where p.name like ?1")
