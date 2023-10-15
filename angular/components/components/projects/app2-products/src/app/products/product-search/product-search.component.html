@@ -1,0 +1,57 @@
+<form action="#" [formGroup]="form" >
+
+    <!-- Category -->
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <input formControlName="category" type="text" placeholder="Search Category" id="category" class="form-control">
+    </div>
+
+    <!-- Keyword -->
+    <div class="mb-3">
+        <label for="keyword" class="form-label">Keyword</label>
+        <input formControlName="keyword" type="text" placeholder="Search Keyword" id="keyword" class="form-control">
+    </div>
+
+    <!-- Price From -->
+    <div class="mb-3">
+        <label for="from" class="form-label">Price From</label>
+        <input formControlName="priceFrom" type="number" placeholder="Price From" id="from" class="form-control">
+    </div>
+
+    <!-- Price To -->
+    <div class="mb-3">
+        <label for="to" class="form-label">Price To</label>
+        <input formControlName="priceTo" type="number" id="to" class="form-control" placeholder="Price To">
+    </div>
+
+    <!-- Status -->
+    <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select formControlName="status" id="status" class="form-select">
+            <option value="">All Status</option>
+            <option value="Active">Active</option>
+            <option value="SoldOut">Sold Out</option>
+            <option value="Deleted">Deleted</option>
+        </select>
+    </div>
+
+    <!-- Search Button -->
+    <div class="mb-2">
+        <button (click)="search()" type="button" class="btn btn-outline-primary d-block w-100">
+            <i class="bi-search"></i> Search
+        </button>
+    </div>
+
+    <!-- Add New Button -->
+    <div class="mb-2">
+        <a [routerLink]="['/product-edit']" class="btn btn-outline-danger d-block w-100">
+            <i class="bi-plus"></i> Add New Product
+        </a>
+    </div>
+
+    <div>
+        <button class="btn btn-outline-success d-block w-100" type="button">
+            <i class="bi-cloud-upload"></i> Upload Products
+        </button>
+    </div>
+</form>

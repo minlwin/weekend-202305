@@ -1,0 +1,33 @@
+<h3>
+    <i class="bi-person-add"></i> Add Student
+</h3>
+
+<div class="row">
+    <div class="col">
+
+        <form [formGroup]="form" >
+
+            <app-form-group label="Name" [valid]="form.get('name')?.valid || false">
+                <input formControlName="name" type="text" placeholder="Enter Name" class="form-control">
+            </app-form-group>
+
+            <app-form-group label="Phone Number" [valid]="form.get('phone')?.valid || false">
+                <input formControlName="phone" type="tel" placeholder="Enter Phone Number" class="form-control">
+            </app-form-group>
+
+            <app-form-group label="Email Address" [valid]="form.get('email')?.valid || false">
+                <input formControlName="email" type="email" placeholder="Enter Email Address" class="form-control">
+            </app-form-group>
+
+            <button (click)="save()" [class.disabled]="!form.valid" type="button" class="btn btn-primary">
+                <i class="bi-save"></i> Save Student
+            </button>
+        </form>
+
+    </div>
+    <div class="col-4">
+        <pre>{{form.value | json}}</pre>
+
+        status is : {{form.status}}
+    </div>
+</div>

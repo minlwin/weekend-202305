@@ -1,0 +1,14 @@
+<div class="d-flex justify-content-between">
+    <h3>Category Management</h3>
+    <a (click)="addNew()" class="btn btn-outline-danger">
+        <i class="bi-plus"></i> Add New
+    </a>
+</div>
+
+<div class="mt-4 row row-cols-4 gy-3">
+    <div *ngFor="let item of list" class="col">
+        <app-category-list-item [category]="item" (onEdit)="edit($event)" ></app-category-list-item>
+    </div>
+</div>
+
+<app-category-edit (onSave)="save($event)"></app-category-edit>

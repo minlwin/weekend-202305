@@ -1,0 +1,25 @@
+<div id="categoryEditDialog" class="modal fade">
+    <div  class="modal-dialog">
+        <form [formGroup]="form" class="modal-content">
+            <div class="modal-header">
+                <h5>Edit Category</h5>
+            </div>
+
+            <div class="modal-body">
+                <label class="form-label">Category Name</label>
+                <div class="input-group">
+                    <input formControlName="name" type="text" placeholder="Enter Category Name" class="form-control">
+                    <span class="input-group-text">
+                        <i [class.bi-check]="form.valid" [class.bi-x]="!form.valid"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button [class.disabled]="!form.valid" (click)="save()" type="button" class="btn btn-danger">
+                    <i class="bi-save"></i> Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

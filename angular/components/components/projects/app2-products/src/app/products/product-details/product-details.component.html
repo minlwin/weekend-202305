@@ -1,0 +1,58 @@
+<h3><i class="bi-gift"></i> {{product?.name || 'Product Details'}}</h3>
+
+<div *ngIf="product" class="row">
+    <div class="col-6">
+        <div class="mb-2">
+            <img [src]="coverImage | images" class="product-details-cover-image" alt="Product Cover Photo">
+        </div>
+
+        <!-- Image List -->
+        <div class="product-details-images d-flex ">
+            <div *ngFor="let item of product.images" (click)="coverImage = item" class="me-2">
+                <img [src]="item | images" alt="Product Image Control">
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <!-- Product Information -->
+
+        <!-- Description -->
+        <h5>Descriptions</h5>
+        <p>{{product.description}}</p>
+
+        <!-- Categories -->
+        <h5>Categories</h5>
+        <p>
+            <span *ngFor="let item of product.category" class="badge bg-primary me-1">{{item.name}}</span>
+        </p>
+
+        <!-- Price -->
+        <h5>Price</h5>
+        <p>{{product.price | number}} MMK</p>
+
+        <!-- Features -->
+        <h4>Features</h4>
+        <div class="mb-4">
+            <div *ngFor="let item of features" class="row">
+                <div class="col-2">{{item[0]}}</div>
+                <div class="col">{{item[1]}}</div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div>
+            <!-- Photo Upload -->
+            <button class="btn btn-outline-primary me-2">
+                <i class="bi-camera"></i> Upload Photos
+            </button>
+
+            <!-- Edit -->
+            <a href="#" class="btn btn-outline-danger">
+                <i class="bi-pencil"></i> Edit Product
+            </a>
+        </div>
+
+
+    </div>
+</div>

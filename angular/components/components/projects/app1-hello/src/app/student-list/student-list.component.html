@@ -1,0 +1,23 @@
+<h3>
+    <i class="bi-people"></i> Student List
+</h3>
+
+<table class="table table-striped table-hover mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let item of list">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.phone}}</td>
+            <td>{{item.email}}</td>
+        </tr>
+    </tbody>
+</table>

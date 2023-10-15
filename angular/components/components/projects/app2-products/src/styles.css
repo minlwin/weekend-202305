@@ -1,0 +1,25 @@
+.product-list-item-image {
+    height: 180px;
+    object-fit: cover;
+}
+
+.product-details-cover-image {
+    height: 360px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.product-details-images {
+    height: 200px;
+}
+
+.product-details-images img {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.product-details-images img:hover {
+    height: 102px;
+    width: 102px;
+}

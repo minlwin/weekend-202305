@@ -1,0 +1,13 @@
+<div class="card">
+    <img [src]="product?.image | images" class="card-img-top product-list-item-image" alt="Product">
+    <div class="card-body">
+        <h5 class="card-title">{{product?.name || 'Product Name'}}</h5>
+        <p>{{product?.description}}</p>
+        <div class="d-flex justify-content-between">
+            <span>{{product?.price | number}} MMK</span>
+            <a [routerLink]="['/product-details', product?.id]" class="btn-link">
+                <i class="bi-send"></i>
+            </a>
+        </div>
+    </div>
+</div>

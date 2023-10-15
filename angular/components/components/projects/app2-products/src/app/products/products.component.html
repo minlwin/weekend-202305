@@ -1,0 +1,19 @@
+<!-- Title -->
+<h3>Product Management</h3>
+
+<div class="row">
+    <div class="col">
+        <!-- Products -->
+        <div class="row row-cols-3 gy-3">
+            <div class="col" *ngFor="let item of list">
+                <app-product-list-item [product]="item"></app-product-list-item>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-3">
+        <!-- Search Region -->
+        <app-product-search (searchEventListener)="search($event)"></app-product-search>
+    </div>
+</div>
+
