@@ -1,5 +1,7 @@
 package com.jdc.onestop.weekend.products.model.repo;
 
-public interface ProductRepo {
+import com.jdc.onestop.weekend.products.model.entity.Product;
+
+public interface ProductRepo extends BaseRepository<Product, Integer>{
 
 }

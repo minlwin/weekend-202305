@@ -48,7 +48,7 @@
             </button>
 
             <!-- Edit -->
-            <a href="#" class="btn btn-outline-danger">
+            <a [routerLink]="['/product-edit']" [queryParams]="{id : product.id}"  class="btn btn-outline-danger">
                 <i class="bi-pencil"></i> Edit Product
             </a>
         </div>
