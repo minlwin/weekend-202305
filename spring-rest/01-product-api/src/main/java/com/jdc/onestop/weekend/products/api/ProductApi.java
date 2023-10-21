@@ -49,7 +49,7 @@ public class ProductApi {
 	
 	@GetMapping("{id}")
 	ProductDetailsDto findById(@PathVariable int id) {
-		return null;
+		return service.findById(id);
 	}
 	
 	@PostMapping("photos")
@@ -59,12 +59,12 @@ public class ProductApi {
 	
 	@PostMapping
 	SaveResult create(@Validated @RequestBody ProductEditForm form, BindingResult result) {
-		return null;
+		return service.create(form);
 	}
 	
-	@PutMapping
-	SaveResult update(@Validated @RequestBody ProductEditForm form, BindingResult result) {
-		return null;
+	@PutMapping("{id}")
+	SaveResult update(@PathVariable int id, @Validated @RequestBody ProductEditForm form, BindingResult result) {
+		return service.update(id, form);
 	}
 	
 }

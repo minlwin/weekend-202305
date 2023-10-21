@@ -1,16 +1,20 @@
 package com.jdc.onestop.weekend.products.model.output;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import com.jdc.onestop.weekend.products.model.entity.Product;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jdc.onestop.weekend.products.model.entity.Product.Status;
+import com.jdc.onestop.weekend.products.model.entity.ProductHistory;
 
 import lombok.Data;
 
 @Data
-public class ProductDetailsDto {
+public class ProductHistoryDto {
+
 	private int id;
+	private int version;
 	private String name;
 	private int price;
 	private String description;
@@ -19,23 +23,23 @@ public class ProductDetailsDto {
 	
 	private Status status;
 	
-	private String image;
+	private String remark;
 	
-	private List<String> images;
-	private List<ProductHistoryDto> history;
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm")
+	private LocalDateTime createAt;
 	
-	public ProductDetailsDto(Product entity) {
-		this.id = entity.getId();
+	public ProductHistoryDto(ProductHistory entity) {
+		this.id = entity.getId().getProductId();
+		this.version = entity.getId().getVersion();
 		this.name = entity.getName();
 		this.price = entity.getPrice();
 		this.description = entity.getDescription();
-		this.categories = entity.getCategories()
-				.stream().map(CategoryDto::new).toList();
+		this.categories = entity.getCategories().stream()
+				.map(CategoryDto::new)
+				.toList();
 		this.features = entity.getFeatures();
 		this.status = entity.getStatus();
-		this.image = entity.getImage();
-		this.history = entity.getHistory().stream()
-				.map(ProductHistoryDto::new).toList();
+		this.remark = entity.getRemark();
 	}
 
 }

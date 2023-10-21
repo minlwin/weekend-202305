@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "8acc943b-77ad-4052-bd94-6b5a37555241",
+		"name": "01-product-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2989298"
+	},
+	"item": [
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "createCategory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\" : \"0\",\r\n    \"name\" : \"Drinks\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "searchProduct",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products?category=1&keyword=Flower&priceFrom=1000&priceTo=10000&status=Active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "1"
+								},
+								{
+									"key": "keyword",
+									"value": "Flower"
+								},
+								{
+									"key": "priceFrom",
+									"value": "1000"
+								},
+								{
+									"key": "priceTo",
+									"value": "10000"
+								},
+								{
+									"key": "status",
+									"value": "Active"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadProducts",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/jdc/Desktop/products.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/upload",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createProduct",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.json().id) {\r",
+									"    pm.collectionVariables.set(\"productId\", pm.response.json().id)\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Coke\",\r\n    \"price\" : \"1200\",\r\n    \"description\" : \"Made in Thailand\",\r\n    \"status\" : \"Active\",\r\n    \"features\"  : {\r\n        \"Calories\" : \"0\",\r\n        \"Size\" : \"500ML\"\r\n    },\r\n    \"categories\" : [1]\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Coke\",\r\n    \"price\" : \"1200\",\r\n    \"description\" : \"Big Size ZERO Coke\",\r\n    \"status\" : \"SoldOut\",\r\n    \"features\"  : {\r\n        \"Calories\" : \"0\",\r\n        \"Size\" : \"500ML\"\r\n    },\r\n    \"categories\" : [1]\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products/{{productId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "productId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

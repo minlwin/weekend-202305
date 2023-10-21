@@ -2,7 +2,10 @@ package com.jdc.onestop.weekend.products.model.form;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
+import com.jdc.onestop.weekend.products.model.entity.Category;
+import com.jdc.onestop.weekend.products.model.entity.Product;
 import com.jdc.onestop.weekend.products.model.entity.Product.Status;
 
 import jakarta.validation.constraints.Min;
@@ -27,4 +30,17 @@ public class ProductEditForm {
 	private Map<String, String> features;
 	@NotEmpty(message = "Please select categories.")
 	private List<Integer> categories;
+	
+	public Product entity(Function<Integer, Category> categoryFunc) {
+		var entity = new Product();
+		entity.setName(name);
+		entity.setDescription(description);
+		entity.setPrice(price);
+		entity.setStatus(status);
+		entity.setFeatures(features);
+		for(var id : categories) {
+			entity.getCategories().add(categoryFunc.apply(id));
+		}
+		return entity;
+	}
 }

@@ -15,11 +15,15 @@ import org.springframework.util.StringUtils;
 
 import com.jdc.onestop.weekend.products.model.entity.Category;
 import com.jdc.onestop.weekend.products.model.entity.Product;
+import com.jdc.onestop.weekend.products.model.entity.Product.Status;
 import com.jdc.onestop.weekend.products.model.entity.Product_;
+import com.jdc.onestop.weekend.products.model.form.ProductEditForm;
 import com.jdc.onestop.weekend.products.model.form.ProductSearchForm;
+import com.jdc.onestop.weekend.products.model.output.ProductDetailsDto;
 import com.jdc.onestop.weekend.products.model.output.ProductDto;
 import com.jdc.onestop.weekend.products.model.output.ProductUploadEvent;
 import com.jdc.onestop.weekend.products.model.output.ProductUploadResult;
+import com.jdc.onestop.weekend.products.model.output.SaveResult;
 import com.jdc.onestop.weekend.products.model.repo.CategoryRepo;
 import com.jdc.onestop.weekend.products.model.repo.ProductRepo;
 import com.jdc.onestop.weekend.products.utils.exceptions.ApiBusinessException;
@@ -120,6 +124,8 @@ public class ProductService {
 				product.getCategories().add(category);
 			}
 			
+			product.setStatus(Status.Active);
+			
 			return product;
 			
 		} catch (NumberFormatException e) {
@@ -148,6 +154,44 @@ public class ProductService {
 			
 			return category;
 		}
+	}
+
+	@Transactional
+	public SaveResult create(ProductEditForm form) {
+		var entity = form.entity(id -> categoryRepo.findById(id)
+				.orElseThrow(() -> new ApiBusinessException("Invalid category id.")));
+		
+		entity = repo.save(entity);
+		
+		eventPublisher.publishEvent(entity);
+		
+		return new SaveResult(entity.getId(), "Product has been created successfully!");
+	}
+
+	@Transactional
+	public SaveResult update(int id, ProductEditForm form) {
+		
+		var categories = form.getCategories().stream().map(a -> categoryRepo.findById(a)
+				.orElseThrow(() -> new ApiBusinessException("Invalid category id.")))
+				.toList();
+		
+		var entity = repo.findById(id)
+				.orElseThrow(() -> new ApiBusinessException("Invalid product id."));
+		entity.setName(form.getName());
+		entity.setDescription(form.getDescription());
+		entity.setPrice(form.getPrice());
+		entity.setFeatures(form.getFeatures());
+		entity.setCategories(categories);
+		entity.setStatus(form.getStatus());
+		
+		eventPublisher.publishEvent(entity);
+		
+		return new SaveResult(id, "Product has been updated successfully!");
+	}
+
+	public ProductDetailsDto findById(int id) {
+		return repo.findById(id).map(ProductDetailsDto::new)
+				.orElseThrow(() -> new ApiBusinessException("Invalid product id."));
 	}
 
 }
