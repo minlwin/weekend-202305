@@ -3,6 +3,7 @@ package com.jdc.onestop.weekend.products.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,12 +58,12 @@ public class ProductApi {
 	}
 	
 	@PostMapping
-	SaveResult create(@RequestBody ProductEditForm form, BindingResult result) {
+	SaveResult create(@Validated @RequestBody ProductEditForm form, BindingResult result) {
 		return null;
 	}
 	
 	@PutMapping
-	SaveResult update(@RequestBody ProductEditForm form, BindingResult result) {
+	SaveResult update(@Validated @RequestBody ProductEditForm form, BindingResult result) {
 		return null;
 	}
 	

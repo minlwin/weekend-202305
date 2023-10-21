@@ -22,9 +22,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "PRODUCT_HISTORY")
 @EntityListeners(value = AuditingEntityListener.class)
 public class ProductHistory {
@@ -52,5 +54,17 @@ public class ProductHistory {
 	
 	@CreatedDate
 	private LocalDateTime createAt;
+	
+	public ProductHistory(Product product) {
+		this.product = product;
+		this.name = product.getName();
+		this.price = product.getPrice();
+		this.description = product.getDescription();
+		this.categories = product.getCategories();
+		this.features = product.getFeatures();
+		this.status = product.getStatus();
+		this.id = new ProductHistoryPK();
+		this.id.setProductId(product.getId());
+	}
 
 }
