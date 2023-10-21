@@ -2,6 +2,7 @@ package com.jdc.onestop.weekend.products.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +17,10 @@ import com.jdc.onestop.weekend.products.model.form.ProductEditForm;
 import com.jdc.onestop.weekend.products.model.form.ProductSearchForm;
 import com.jdc.onestop.weekend.products.model.output.ProductDetailsDto;
 import com.jdc.onestop.weekend.products.model.output.ProductDto;
+import com.jdc.onestop.weekend.products.model.output.ProductUploadResult;
 import com.jdc.onestop.weekend.products.model.output.SaveResult;
 import com.jdc.onestop.weekend.products.service.ProductService;
+import com.jdc.onestop.weekend.products.service.TextFileReader;
 
 @RestController
 @RequestMapping("products")
@@ -25,6 +28,9 @@ public class ProductApi {
 	
 	@Autowired
 	private ProductService service;
+	
+	@Autowired
+	private TextFileReader textFileReader;
 
 	@GetMapping
 	Page<ProductDto> search(
@@ -35,8 +41,9 @@ public class ProductApi {
 	}
 	
 	@PostMapping("upload")
-	Page<ProductDto> upload(@RequestParam MultipartFile file) {
-		return null;
+	ProductUploadResult upload(@RequestParam MultipartFile file) {
+		var lines = textFileReader.read(file);
+		return service.create(lines);
 	}
 	
 	@GetMapping("{id}")
@@ -50,12 +57,12 @@ public class ProductApi {
 	}
 	
 	@PostMapping
-	SaveResult create(@RequestBody ProductEditForm form) {
+	SaveResult create(@RequestBody ProductEditForm form, BindingResult result) {
 		return null;
 	}
 	
 	@PutMapping
-	SaveResult update(@RequestBody ProductEditForm form) {
+	SaveResult update(@RequestBody ProductEditForm form, BindingResult result) {
 		return null;
 	}
 	
