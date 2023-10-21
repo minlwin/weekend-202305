@@ -36,7 +36,7 @@ public class ProductService {
 				cb -> {
 					var query = cb.createQuery(Long.class);
 					var root = query.from(Product.class);
-					query.select(root.get(Product_.ID));
+					query.select(cb.count(root.get(Product_.ID)));
 					query.where(form.where(cb, root));
 					return query;
 				};

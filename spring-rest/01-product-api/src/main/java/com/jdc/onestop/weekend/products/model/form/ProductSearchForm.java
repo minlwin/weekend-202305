@@ -1,7 +1,6 @@
 package com.jdc.onestop.weekend.products.model.form;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 import org.springframework.util.StringUtils;
 
@@ -19,45 +18,46 @@ import lombok.Data;
 @Data
 public class ProductSearchForm {
 
-	private Optional<Integer> category;
-	private Optional<String> keyword;
-	private Optional<Integer> priceFrom;
-	private Optional<Integer> priceTo;
-	private Optional<Status> status;
+	private Integer category;
+	private String keyword;
+	private Integer priceFrom;
+	private Integer priceTo;
+	private Status status;
 	
 	public Predicate[] where(CriteriaBuilder cb, Root<Product> root) {
 		
 		var list = new ArrayList<Predicate>();
 		
-		category.filter(a -> a > 0).ifPresent(param -> {
+		if(null != category && category > 0) {
 			var category = root.join(Product_.categories, JoinType.LEFT);
-			var predicate = cb.equal(category.get(Category_.id), param);
+			var predicate = cb.equal(category.get(Category_.id), this.category);
 			list.add(predicate);
-		});
+		}
 		
-		keyword.filter(StringUtils::hasLength).ifPresent(param -> {
+		if(StringUtils.hasLength(keyword)) {
 			// (lower(p.name) like lower('?%') or lower(p.description) like lower('%?%'))
 			var predicate = cb.or(
-					cb.like(cb.lower(root.get(Product_.name)), param.toLowerCase().concat("%")),
-					cb.like(cb.lower(root.get(Product_.description)), "%".concat(param.toLowerCase()).concat("%"))
+					cb.like(cb.lower(root.get(Product_.name)), keyword.toLowerCase().concat("%")),
+					cb.like(cb.lower(root.get(Product_.description)), "%".concat(keyword.toLowerCase()).concat("%"))
 					);
 			list.add(predicate);
-		});
+		}
 		
-		priceFrom.filter(a -> a > 0).ifPresent(param -> {
-			var predicate = cb.ge(root.get(Product_.price), param);
-			list.add(predicate);
-		});
 		
-		priceTo.filter(a -> a > 0).ifPresent(param -> {
-			var predicate = cb.le(root.get(Product_.price), param);
+		if(null != priceFrom && priceFrom > 0) {
+			var predicate = cb.ge(root.get(Product_.price), priceFrom);
 			list.add(predicate);
-		});
+		}
 		
-		status.ifPresent(param -> {
-			var predicate = cb.equal(root.get(Product_.status), param);
+		if(null != priceTo && priceTo > 0) {
+			var predicate = cb.le(root.get(Product_.price), priceTo);
 			list.add(predicate);
-		});
+		}
+		
+		if(null != status) {
+			var predicate = cb.equal(root.get(Product_.status), status);
+			list.add(predicate);
+		}
 		
 		return list.toArray(size -> new Predicate[size]);
 	}

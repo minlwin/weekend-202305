@@ -3,9 +3,14 @@ package com.jdc.onestop.weekend.products.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jdc.onestop.weekend.products.model.form.ProductEditForm;
 import com.jdc.onestop.weekend.products.model.form.ProductSearchForm;
@@ -29,23 +34,28 @@ public class ProductApi {
 		return service.search(form, page, size);
 	}
 	
-	Page<ProductDto> upload() {
+	@PostMapping("upload")
+	Page<ProductDto> upload(@RequestParam MultipartFile file) {
 		return null;
 	}
 	
-	ProductDetailsDto findById(int id) {
+	@GetMapping("{id}")
+	ProductDetailsDto findById(@PathVariable int id) {
 		return null;
 	}
 	
-	ProductDetailsDto uploadPhotos() {
+	@PostMapping("photos")
+	ProductDetailsDto uploadPhotos(@RequestParam MultipartFile[] files) {
 		return null;
 	}
 	
-	SaveResult create(ProductEditForm form) {
+	@PostMapping
+	SaveResult create(@RequestBody ProductEditForm form) {
 		return null;
 	}
 	
-	SaveResult update(ProductEditForm form) {
+	@PutMapping
+	SaveResult update(@RequestBody ProductEditForm form) {
 		return null;
 	}
 	
