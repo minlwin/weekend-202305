@@ -1,6 +1,7 @@
 package com.jdc.onestop.weekend.products.model.output;
 
 import com.jdc.onestop.weekend.products.model.entity.Product;
+import com.jdc.onestop.weekend.products.model.entity.Product.Status;
 import com.jdc.onestop.weekend.products.model.entity.Product_;
 
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -19,6 +20,7 @@ public class ProductDto {
 	private int price;
 	private String description;
 	private String image;
+	private Status status;
 	
 	public static void select(CriteriaQuery<ProductDto> query, Root<Product> root) {
 		query.multiselect(
@@ -26,7 +28,8 @@ public class ProductDto {
 			root.get(Product_.name),
 			root.get(Product_.price),
 			root.get(Product_.description),
-			root.get(Product_.image)
+			root.get(Product_.image),
+			root.get(Product_.status)
 		);
 	}
 }

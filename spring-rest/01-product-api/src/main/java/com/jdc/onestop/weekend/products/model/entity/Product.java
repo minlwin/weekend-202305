@@ -48,4 +48,5 @@ public class Product {
 	public enum Status {
 		Active, SoldOut, Deleted
 	}
+	
 }

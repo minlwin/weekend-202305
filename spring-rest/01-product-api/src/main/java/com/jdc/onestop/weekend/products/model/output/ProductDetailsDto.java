@@ -34,6 +34,7 @@ public class ProductDetailsDto {
 		this.features = entity.getFeatures();
 		this.status = entity.getStatus();
 		this.image = entity.getImage();
+		this.images = entity.getImages();
 		this.history = entity.getHistory().stream()
 				.map(ProductHistoryDto::new).toList();
 	}

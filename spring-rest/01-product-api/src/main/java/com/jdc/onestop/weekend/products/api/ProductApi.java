@@ -20,6 +20,7 @@ import com.jdc.onestop.weekend.products.model.output.ProductDetailsDto;
 import com.jdc.onestop.weekend.products.model.output.ProductDto;
 import com.jdc.onestop.weekend.products.model.output.ProductUploadResult;
 import com.jdc.onestop.weekend.products.model.output.SaveResult;
+import com.jdc.onestop.weekend.products.service.ImageFileWriter;
 import com.jdc.onestop.weekend.products.service.ProductService;
 import com.jdc.onestop.weekend.products.service.TextFileReader;
 
@@ -32,6 +33,9 @@ public class ProductApi {
 	
 	@Autowired
 	private TextFileReader textFileReader;
+	
+	@Autowired
+	private ImageFileWriter fileWriter;
 
 	@GetMapping
 	Page<ProductDto> search(
@@ -52,9 +56,13 @@ public class ProductApi {
 		return service.findById(id);
 	}
 	
-	@PostMapping("photos")
-	ProductDetailsDto uploadPhotos(@RequestParam MultipartFile[] files) {
-		return null;
+	@PostMapping("{id}/photos")
+	ProductDetailsDto uploadPhotos(@PathVariable int id, @RequestParam MultipartFile[] files) {
+		
+		var images = fileWriter.save(id, files);
+		service.savePhoto(id, images);
+		
+		return service.findById(id);
 	}
 	
 	@PostMapping

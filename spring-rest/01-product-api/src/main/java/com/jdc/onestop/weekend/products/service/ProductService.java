@@ -194,4 +194,16 @@ public class ProductService {
 				.orElseThrow(() -> new ApiBusinessException("Invalid product id."));
 	}
 
+	@Transactional
+	public void savePhoto(int id, List<String> images) {
+		
+		var product = repo.findById(id)
+				.orElseThrow(() -> new ApiBusinessException("Invalid product id."));
+		product.getImages().addAll(images);
+		
+		if(!StringUtils.hasLength(product.getImage()) && !product.getImages().isEmpty()) {
+			product.setImage(images.get(0));
+		}
+	}
+
 }
