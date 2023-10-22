@@ -14,6 +14,6 @@ export class ProductsComponent {
   constructor(private service:ProductService) {}
 
   search(form:any) {
-    this.service.search(form).subscribe(result => this.list = result)
+    this.service.search(form).subscribe(result => this.list = result.content)
   }
 }
