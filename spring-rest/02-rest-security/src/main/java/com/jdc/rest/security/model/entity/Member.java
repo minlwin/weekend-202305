@@ -11,6 +11,10 @@ import lombok.Data;
 @Data
 @Entity
 public class Member {
+	
+	public enum Role {
+		Admin, Member
+	}
 
 	@Id
 	private String loginId;
@@ -18,7 +22,7 @@ public class Member {
 	@Column(nullable = false)
 	private String password;
 	@Column(nullable = false)
-	private String role;
+	private Role role;
 	private String email;
 	private LocalDateTime registAt;
 	
