@@ -15,8 +15,11 @@ public class JwtTokenProvider {
 	
 	private String issuer = "com.jdc.token.demo";
 	private Key signKey = Jwts.SIG.HS512.key().build();
+	
+	
 
 	public String generate(Authentication result) {
+		
 		if(null != result && result.isAuthenticated()) {
 			
 			var issueAt = new Date();

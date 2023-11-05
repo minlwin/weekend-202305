@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.jdc.rest.security.model.entity.Member;
 import com.jdc.rest.security.model.entity.Member.Role;
+import com.jdc.rest.security.model.entity.MemberAccess;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -28,6 +29,11 @@ public record SignUpForm(
 		entity.setRole(Role.Member);
 		entity.setEmail(email);
 		entity.setRegistAt(LocalDateTime.now());
+		
+		var access = new MemberAccess();
+		access.setMember(entity);
+		entity.setAccess(access);
+		
 		return entity;
 	}
 

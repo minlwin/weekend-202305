@@ -30,6 +30,8 @@ public class SecurityService {
 		// Generate JWT Token
 		var jwtToken = tokenProvider.generate(result);
 		
+		// TODO Create Access History and Information
+		
 		// Get Login User with member service
 		var loginUser = memberService.findByLoginId(result.getName());
 

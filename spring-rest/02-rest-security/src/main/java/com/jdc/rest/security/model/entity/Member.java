@@ -2,6 +2,7 @@ package com.jdc.rest.security.model.entity;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -26,6 +27,6 @@ public class Member {
 	private String email;
 	private LocalDateTime registAt;
 	
-	@OneToOne(mappedBy = "member")
+	@OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private MemberAccess access;
 }
