@@ -52,9 +52,10 @@ public class JwtTokenProvider {
 	public Authentication parse(String authToken) {
 		try {
 			var jws = Jwts.parser()
-					.setSigningKey(signKey)
+					.verifyWith(signKey)
 					.requireIssuer(issuer)
-					.build().parseClaimsJws(authToken.substring("Bearer : ".length()));
+					.build()
+					.parseSignedClaims(authToken.substring("Bearer : ".length()));
 				
 				var username = jws.getPayload().getSubject();
 				var roles = jws.getPayload().get("role", String.class).split(",");

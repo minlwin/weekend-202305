@@ -25,8 +25,7 @@ public class MemberAdminApi {
 	public ApiResponse<List<MemberDto>> search(
 			@RequestParam Optional<String> name,
 			@RequestParam Optional<LocalDate> from,
-			@RequestParam Optional<LocalDate> to
-			) {
+			@RequestParam Optional<LocalDate> to) {
 		return ApiResponse.success(memberService.search(name, from, to));
 	}
 }
