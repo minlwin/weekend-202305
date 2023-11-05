@@ -7,4 +7,5 @@ import com.jdc.rest.security.model.entity.AccessHistoryPk;
 
 public interface AccessHistoryRepo extends JpaRepositoryImplementation<AccessHistory, AccessHistoryPk>{
 
+	long countByIdMemberId(String memberId);
 }

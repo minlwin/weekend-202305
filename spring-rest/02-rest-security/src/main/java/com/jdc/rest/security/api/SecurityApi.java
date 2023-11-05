@@ -11,6 +11,7 @@ import com.jdc.rest.security.model.dto.ApiResponse;
 import com.jdc.rest.security.model.dto.SignInForm;
 import com.jdc.rest.security.model.dto.SignInResult;
 import com.jdc.rest.security.model.dto.SignUpForm;
+import com.jdc.rest.security.service.MemberService;
 import com.jdc.rest.security.service.SecurityService;
 import com.jdc.rest.security.utils.exception.ApiValidationException;
 
@@ -20,6 +21,9 @@ public class SecurityApi {
 	
 	@Autowired
 	private SecurityService service;
+	
+	@Autowired
+	private MemberService memberService;
 
 	@PostMapping("signup")
 	public ApiResponse<String> signUp(
@@ -30,7 +34,7 @@ public class SecurityApi {
 			throw new ApiValidationException(result);
 		}
 		
-		return ApiResponse.success(service.createUser(form));
+		return ApiResponse.success(memberService.createUser(form));
 	}
 	
 	@PostMapping("signin")

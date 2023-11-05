@@ -1,4 +1,4 @@
-package com.jdc.rest.security.service;
+package com.jdc.rest.security.utils.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import com.jdc.rest.security.model.dto.LoginUser;
+import com.jdc.rest.security.model.dto.MemberDto;
 import com.jdc.rest.security.model.dto.SignInForm;
 import com.jdc.rest.security.model.dto.SignInResult;
 import com.jdc.rest.security.model.entity.AccessHistory;
@@ -48,7 +48,7 @@ public class AccessInformationAspect {
 				}
 				
 				if(result instanceof SignInResult signInResult) {
-					return signInResult.withUser(LoginUser.withMemberAndAccess(member, member.getAccess()));
+					return signInResult.withUser(form.username(), MemberDto.withMember(member));
 				}
 			}
 		} catch (Throwable e) {

@@ -1,11 +1,12 @@
 package com.jdc.rest.security.model.dto;
 
 public record SignInResult(
-		LoginUser user,
+		String loginId,
+		MemberDto user,
 		String token
 		) {
 	
-	public SignInResult withUser(LoginUser user) {
-		return new SignInResult(user, token);
+	public SignInResult withUser(String loginId, MemberDto user) {
+		return new SignInResult(loginId, user, token);
 	}
 }

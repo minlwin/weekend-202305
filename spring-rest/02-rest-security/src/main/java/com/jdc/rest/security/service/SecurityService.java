@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jdc.rest.security.model.dto.SignInForm;
 import com.jdc.rest.security.model.dto.SignInResult;
-import com.jdc.rest.security.model.dto.SignUpForm;
 import com.jdc.rest.security.utils.access.AccessLog;
+import com.jdc.rest.security.utils.security.JwtTokenProvider;
 
 @Service
 public class SecurityService {
@@ -44,12 +44,7 @@ public class SecurityService {
 
 		// Create and return result
 		
-		return new SignInResult(loginUser, jwtToken);
-	}
-
-	@Transactional
-	public String createUser(SignUpForm form) {
-		return memberService.createUser(form);
+		return new SignInResult(form.username(), loginUser, jwtToken);
 	}
 
 }
