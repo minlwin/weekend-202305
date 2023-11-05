@@ -12,7 +12,7 @@ import com.jdc.rest.security.model.dto.SignInForm;
 import com.jdc.rest.security.model.dto.SignInResult;
 import com.jdc.rest.security.model.dto.SignUpForm;
 import com.jdc.rest.security.service.SecurityService;
-import com.jdc.rest.security.utils.ApiValidationException;
+import com.jdc.rest.security.utils.exception.ApiValidationException;
 
 @RestController
 @RequestMapping("security")

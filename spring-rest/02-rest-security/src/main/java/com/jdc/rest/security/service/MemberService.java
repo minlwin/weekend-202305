@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jdc.rest.security.model.dto.LoginUser;
 import com.jdc.rest.security.model.dto.SignUpForm;
 import com.jdc.rest.security.model.repo.MemberRepo;
-import com.jdc.rest.security.utils.ApiBusinessException;
+import com.jdc.rest.security.utils.exception.ApiBusinessException;
 
 @Service
 @Transactional(readOnly = true)

@@ -15,7 +15,7 @@ public class AccessHistory {
 	private String remark;
 	
 	public enum AccessStatus {
-		SignUp, SignIn, Error
+		Success, Error
 	}
 	
 }

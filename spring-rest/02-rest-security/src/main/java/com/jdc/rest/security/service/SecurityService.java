@@ -2,12 +2,15 @@ package com.jdc.rest.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jdc.rest.security.model.dto.SignInForm;
 import com.jdc.rest.security.model.dto.SignInResult;
 import com.jdc.rest.security.model.dto.SignUpForm;
+import com.jdc.rest.security.utils.access.AccessLog;
 
 @Service
 public class SecurityService {
@@ -21,7 +24,11 @@ public class SecurityService {
 	@Autowired
 	private JwtTokenProvider tokenProvider;
 
-	@Transactional(readOnly = true)
+	@AccessLog
+	@Transactional(noRollbackFor = {
+		AuthenticationException.class,
+		InternalAuthenticationServiceException.class
+	})
 	public SignInResult signIn(SignInForm form) {
 		
 		// Authenticate with Authentication Manager

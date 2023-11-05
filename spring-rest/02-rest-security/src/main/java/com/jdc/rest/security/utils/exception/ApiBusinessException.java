@@ -1,4 +1,4 @@
-package com.jdc.rest.security.utils;
+package com.jdc.rest.security.utils.exception;
 
 public class ApiBusinessException extends RuntimeException{
 
