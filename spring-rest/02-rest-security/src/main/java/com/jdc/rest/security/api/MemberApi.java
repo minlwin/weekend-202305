@@ -33,7 +33,7 @@ public class MemberApi {
 	
 	@GetMapping("access")
 	public ApiResponse<List<AccessHistoryDto>> getAccessHistory(
-			@RequestParam String username,
+			@RequestParam(required = false) String username,
 			@RequestParam Optional<LocalDate> from,
 			@RequestParam Optional<LocalDate> to
 			) {
