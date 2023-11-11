@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,7 @@ public class MemberService {
 		
 	}
 
+	@PreAuthorize("hasAuthority('Admin') OR (hasAuthority('Member') AND authentication.name eq #username)")
 	public ProfileDto getProfile(String username) {
 		var memberDto = repo.findById(username)
 				.map(MemberDto::withMember)
