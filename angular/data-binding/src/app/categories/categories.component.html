@@ -1,0 +1,15 @@
+<h3 class="d-flex justify-content-between">
+  Category Management
+  <button (click)="addNew()" class="btn btn-danger">Add New</button>
+</h3>
+
+<div class="row row-cols-4">
+  @for (item of list; track $index) {
+    <div class="col">
+      <app-category-details [item]="item" (editEvent)="edit($event)" ></app-category-details>
+    </div>
+  }
+</div>
+
+
+<app-category-edit (onSave)="saveCategory($event)"></app-category-edit>
