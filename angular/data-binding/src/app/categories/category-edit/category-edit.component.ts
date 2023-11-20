@@ -31,7 +31,11 @@ export class CategoryEditComponent implements AfterViewInit{
     this.dialog = new bootstrap.Modal('#categoryEditDialog')
   }
 
-  show() {
+  show(c?:any) {
+    this.form.patchValue(c || {
+      id: 0, name: ""
+    })
+
     this.dialog?.show()
   }
 

@@ -1,0 +1,62 @@
+<h3>Product Details</h3>
+
+<div class="row">
+  <div class="col">
+    <h5>{{data.name}}</h5>
+  </div>
+
+  <div class="col-4">
+    <h5>Product Info</h5>
+    <div>
+      <label>Categories</label>
+      <div>
+        @for (item of data.categories; track $index) {
+          <span class="me-2">{{item.name}}</span>
+        }
+      </div>
+    </div>
+    <div>
+      <label>Price</label>
+      <div>{{data.price}}</div>
+    </div>
+
+    <div>
+      <label>Features</label>
+      <div>
+        @for (item of featureNames; track $index) {
+          <div>
+            <label>{{item}} : {{data.features[item]}}</label>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<h5>Change History</h5>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Version</th>
+      <th>Price</th>
+      <th>Status</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (item of data.history; track $index) {
+      <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.version}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.status}}</td>
+        <td>{{item.description}}</td>
+      </tr>
+    }
+  </tbody>
+</table>

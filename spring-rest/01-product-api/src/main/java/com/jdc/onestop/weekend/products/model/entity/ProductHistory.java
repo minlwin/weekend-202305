@@ -53,7 +53,7 @@ public class ProductHistory {
 	private String remark;
 	
 	@CreatedDate
-	private LocalDateTime createAt;
+	private LocalDateTime createAt = LocalDateTime.now();
 	
 	public ProductHistory(Product product) {
 		this.product = product;

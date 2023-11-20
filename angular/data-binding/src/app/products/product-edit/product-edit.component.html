@@ -1,0 +1,80 @@
+<h4>Product Edit</h4>
+
+<form [formGroup]="form">
+
+  <div class="row">
+    <div class="col-6">
+      <!-- Name -->
+      <div class="mb-3">
+        <label class="form-label">Product Name</label>
+        <input formControlName="name" type="text" placeholder="Enter Product Name" class="form-control">
+      </div>
+      <!-- Categories -->
+      <div class="mb-3">
+        <label class="form-label">Categories</label>
+        <div class="d-flex">
+          @for (item of categories; track $index) {
+            <div class="form-check me-4">
+              <input #check class="form-check-input" id="cat_{{$index}}" type="checkbox" (change)="checkCategory($event.target, item)">
+              <label class="form-check-label" for="cat_{{$index}}">{{item.name}}</label>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <!-- Status -->
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select formControlName="status" class="form-select">
+              <option value="Active">Active</option>
+              <option value="SoldOut">Sold Out</option>
+              <option value="Deleted">Deleted</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col">
+          <!-- Prices -->
+          <div class="mb-3">
+            <label class="form-label">Product Price</label>
+            <input formControlName="price" type="number" placeholder="Enter Price" class="form-control">
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea formControlName="description" class="form-control" rows="3" cols="40"></textarea>
+      </div>
+
+    </div>
+
+    <div class="col" formArrayName="features">
+      <!-- Features -->
+      <div class="row mb-2" *ngFor="let item of featureFormArray.controls; index as i" [formGroupName]="i">
+        <div class="col-4">
+          <label *ngIf="i == 0" class="form-label">Name</label>
+          <input formControlName="name" type="text" class="form-control">
+        </div>
+        <div class="col">
+          <label *ngIf="i == 0" class="form-label">Value</label>
+          <div class="input-group">
+            <input formControlName="value" type="text" class="form-control">
+            <label (click)="deleteFeature(i)" class="input-group-text">x</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <button (click)="addNewFeature()" class="btn btn-primary me-2">Add Feature</button>
+        <button (click)="save()" class="btn btn-primary">Save Product</button>
+      </div>
+
+    </div>
+  </div>
+
+</form>

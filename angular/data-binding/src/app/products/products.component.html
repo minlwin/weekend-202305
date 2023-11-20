@@ -1,1 +1,66 @@
-<p>products works!</p>
+<h4 class="d-flex justify-content-between">
+  <span>Product Management</span>
+
+  <a [routerLink]="['/product-edit']" class="btn btn-primary">Add New</a>
+</h4>
+
+<form [formGroup]="form" class="row">
+  <!-- Category Select -->
+  <div class="col-auto">
+    <label class="form-label">Category</label>
+    <select formControlName="category" class="form-select">
+      <option value="0">Search All</option>
+      @for (item of categories; track $index) {
+        <option [value]="item.id">{{item.name}}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Status Select -->
+  <div class="col-auto">
+    <label class="form-label">Status</label>
+    <select formControlName="status" class="form-select">
+      <option value="">Search All</option>
+      <option value="Active">Active</option>
+      <option value="SoldOut">Sold Out</option>
+      <option value="Deleted">Deleted</option>
+    </select>
+  </div>
+
+  <!-- Keyword -->
+  <div class="col-auto">
+    <label class="form-label">Keyword</label>
+    <input formControlName="keyword" type="text" class="form-control" placeholder="Search Keyword">
+  </div>
+
+  <div class="col" style="padding-top: 2rem;">
+    <button type="button" class="btn btn-primary">Search</button>
+  </div>
+
+</form>
+
+<table class="table table-striped mt-4">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Price</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (item of list; track $index) {
+      <tr>
+        <td>
+          <a [routerLink]="['/product-details']" [queryParams]="{id: item.id}">{{item.id}}</a>
+        </td>
+        <td>{{item.name}}</td>
+        <td>{{item.status}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.description}}</td>
+      </tr>
+    }
+  </tbody>
+</table>

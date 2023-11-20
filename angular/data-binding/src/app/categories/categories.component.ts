@@ -31,16 +31,11 @@ export class CategoriesComponent {
   }
 
   addNew() {
-    this.editDialog?.form.patchValue({
-      id: 0,
-      name: ""
-    })
     this.editDialog?.show()
   }
 
   edit(c:any) {
-    this.editDialog?.form.patchValue(c)
-    this.editDialog?.show()
+    this.editDialog?.show(c)
   }
 
   saveCategory(c:any) {
